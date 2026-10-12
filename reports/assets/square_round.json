@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/cc/StudioProjects/banjin-zhankai/assets/components/source/square_round_source.png",
+  "output": "/Users/cc/StudioProjects/banjin-zhankai/assets/components/square_round.png",
+  "background_rgb": [
+    236,
+    24,
+    230
+  ],
+  "threshold": 36.0,
+  "feather_threshold": 72.0,
+  "trimmed": true,
+  "padding": 24,
+  "width": 953,
+  "height": 1109,
+  "transparent_pixels": 946395,
+  "opaque_pixels": 626121
+}

@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/cc/StudioProjects/banjin-zhankai/assets/components/source/tee_source.png",
+  "output": "/Users/cc/StudioProjects/banjin-zhankai/assets/components/tee.png",
+  "background_rgb": [
+    242,
+    22,
+    238
+  ],
+  "threshold": 36.0,
+  "feather_threshold": 72.0,
+  "trimmed": true,
+  "padding": 24,
+  "width": 1116,
+  "height": 872,
+  "transparent_pixels": 1035933,
+  "opaque_pixels": 536583
+}

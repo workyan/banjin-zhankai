@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/cc/StudioProjects/banjin-zhankai/assets/components/source/elbow_source.png",
+  "output": "/Users/cc/StudioProjects/banjin-zhankai/assets/components/elbow.png",
+  "background_rgb": [
+    237,
+    21,
+    213
+  ],
+  "threshold": 36.0,
+  "feather_threshold": 72.0,
+  "trimmed": true,
+  "padding": 24,
+  "width": 940,
+  "height": 1002,
+  "transparent_pixels": 1046091,
+  "opaque_pixels": 526425
+}

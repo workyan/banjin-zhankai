@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/cc/StudioProjects/banjin-zhankai/assets/components/source/conical_frustum_source.png",
+  "output": "/Users/cc/StudioProjects/banjin-zhankai/assets/components/conical_frustum.png",
+  "background_rgb": [
+    241,
+    22,
+    235
+  ],
+  "threshold": 36.0,
+  "feather_threshold": 72.0,
+  "trimmed": true,
+  "padding": 24,
+  "width": 832,
+  "height": 1064,
+  "transparent_pixels": 956338,
+  "opaque_pixels": 616178
+}
