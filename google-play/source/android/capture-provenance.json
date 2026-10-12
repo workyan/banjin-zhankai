@@ -1,0 +1,85 @@
+{
+  "platform": "android",
+  "locale": "en-US",
+  "build": "1.0.0+1 (debug capture of actual app UI)",
+  "device": "Android API 35 ARM64 emulator; 1080×1920, density 320",
+  "applicationId": "com.cc.banjinzhankai",
+  "apkSha256": "655f0da9529de8e7bf8c7d716e9b758ca2af372c8226274fecdfcd0437680259",
+  "capturedAt": "2026-10-12T10:43:50.464810+00:00",
+  "commitBeforeChanges": "5d56ff255b82d92ed3dfe5a03202a1c0683e1c06",
+  "captureBridge": "Native debug-only intent extras; real widgets with deterministic sample data",
+  "slides": [
+    {
+      "id": "01-flat-pattern",
+      "scene": "result-dimensions",
+      "file": "01-flat-pattern.png",
+      "scrollPixels": 0,
+      "scrollTarget": null,
+      "width": 1080,
+      "height": 1920,
+      "sha256": "eee19eb3dd3821b71c15ea389e9674905b55e3f34ed8dd696a33f4cecb009aea",
+      "runtimeErrorLogEmpty": true,
+      "foregroundActivityConfirmed": true
+    },
+    {
+      "id": "02-shape-library",
+      "scene": "home-overview",
+      "file": "02-shape-library.png",
+      "scrollPixels": 0,
+      "scrollTarget": null,
+      "width": 1080,
+      "height": 1920,
+      "sha256": "1d34774ebdc6491af2eb4e9788c3ddcc2663c9f411c42048cf0c346dfea52e3d",
+      "runtimeErrorLogEmpty": true,
+      "foregroundActivityConfirmed": true
+    },
+    {
+      "id": "03-visual-input",
+      "scene": "calculator-input",
+      "file": "03-visual-input.png",
+      "scrollPixels": 0,
+      "scrollTarget": null,
+      "width": 1080,
+      "height": 1920,
+      "sha256": "33d0c34e27c2fa79e6867ead6c6d2ce644004dbbd106283cb34eb2d1079e2c43",
+      "runtimeErrorLogEmpty": true,
+      "foregroundActivityConfirmed": true
+    },
+    {
+      "id": "04-layout-points",
+      "scene": "result-points",
+      "file": "04-layout-points.png",
+      "scrollPixels": 0,
+      "scrollTarget": null,
+      "width": 1080,
+      "height": 1920,
+      "sha256": "931336e98b6163e8c9d1d79c3177706dbaa302da417ce0d2b80b3751ba0c0e62",
+      "runtimeErrorLogEmpty": true,
+      "foregroundActivityConfirmed": true
+    },
+    {
+      "id": "05-projects",
+      "scene": "projects",
+      "file": "05-projects.png",
+      "scrollPixels": 0,
+      "scrollTarget": null,
+      "width": 1080,
+      "height": 1920,
+      "sha256": "a6f11c88f84f89cbde90942ddc9fc66cca6a355ac358315394b42b18f7ab9b7d",
+      "runtimeErrorLogEmpty": true,
+      "foregroundActivityConfirmed": true
+    },
+    {
+      "id": "06-history",
+      "scene": "history",
+      "file": "06-history.png",
+      "scrollPixels": 0,
+      "scrollTarget": null,
+      "width": 1080,
+      "height": 1920,
+      "sha256": "c32ce4968167c66597a7c636443ef1abbe6e9870168ce6b4e91da0ecff3fa7b6",
+      "runtimeErrorLogEmpty": true,
+      "foregroundActivityConfirmed": true
+    }
+  ]
+}

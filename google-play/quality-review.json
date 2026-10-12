@@ -1,0 +1,34 @@
+{
+  "reviewedAt": "2026-10-12T10:53:35.941473+00:00",
+  "assetStatus": "ready for the English phone listing; compare against signed release before submitting",
+  "visualDirection": "技术制图：蓝白配色、淡网格、尺寸图作为画面中心",
+  "reviewMethod": "Visual review of six-slide contact sheet, real source images and selected full-size exports; source code review for feature claims.",
+  "checks": {
+    "actualAndroidUI": true,
+    "englishUI": true,
+    "noRepaintedOrInventedAppControls": true,
+    "headlineAndScreenshotDoNotOverlap": true,
+    "appUIWidthAtLeast70Percent": true,
+    "keyResultsAndControlsVisible": true,
+    "oneBenefitPerSlide": true,
+    "noPricingRankingAwardsOrDownloadClaims": true,
+    "noBlankOrPlaceholderExport": true,
+    "noSimulatorRuntimeErrors": true,
+    "rawCaptureHashesVerified": true
+  },
+  "assetSha256": {
+    "graphics/feature-graphic-1024x500.png": "e055d487cb46a301f7f977deb2e3bdec94f9e02b495871d0ee4cad9ebbf1f066",
+    "graphics/icon-512.png": "70b9605501d05a43fc3e236b267182b152c45ee3887eb7e0787377a90096ed34",
+    "screenshots-final/01-flat-pattern-1080x1920.png": "bc5f7b8ef07b48e3b856eebe68e145e48097fa96bfbfa69af42c712fbed11d1a",
+    "screenshots-final/02-shape-library-1080x1920.png": "9cc25d2f2e091298bdceabdf73a696347bbfa580b724170d14a8f8cdd64ff6e8",
+    "screenshots-final/03-visual-input-1080x1920.png": "f79a803ff5c2c02a1314fa3479b76c1cc7f884493cb0d96d1f0d6f08b38d187d",
+    "screenshots-final/04-layout-points-1080x1920.png": "7ea0f9970796a26f72ed70aa0764a2264fbacd850d5073b55862756f6f1303f5",
+    "screenshots-final/05-projects-1080x1920.png": "5d46622a805a6b88636e06b24609550aede0927daff091e1f209fcc5267cc712",
+    "screenshots-final/06-history-1080x1920.png": "6bb06a7ecd3ae53181719566fa0e093d45c77d723dc458894f3476a9df539b38"
+  },
+  "remainingReleaseSteps": [
+    "Set up the local upload signing key and build/test the release AAB.",
+    "Publish the Android English privacy/support pages and confirm the contact email.",
+    "Complete applicable Play Console declarations and testing requirements."
+  ]
+}

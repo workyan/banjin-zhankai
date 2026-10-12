@@ -1,3 +1,4 @@
+import 'app_language.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:math' as math;
@@ -36,7 +37,7 @@ class SheetMetalApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: '钣金展开',
+      title: AppStrings.sheetMetalLayout,
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
@@ -194,16 +195,17 @@ class ConeResult {
       'A ${largeDiameter.toStringAsFixed(0)} · B ${smallDiameter.toStringAsFixed(0)} · H ${height.toStringAsFixed(0)}';
 
   String report([int decimals = 1]) =>
-      '同心圆锥台计算结果\n'
-      '大端直径 A：${largeDiameter.toStringAsFixed(decimals)} mm\n'
-      '小端直径 B：${smallDiameter.toStringAsFixed(decimals)} mm\n'
-      '高度 H：${height.toStringAsFixed(decimals)} mm\n'
-      '母线实长 L：${slant.toStringAsFixed(decimals)} mm\n'
-      '扇形内半径 R₁：${innerRadius.toStringAsFixed(decimals)} mm\n'
-      '扇形外半径 R₂：${outerRadius.toStringAsFixed(decimals)} mm\n'
-      '圆心角 θ：${angle.toStringAsFixed(decimals)}°\n'
-      '理论下料面积：${area.toStringAsFixed(3)} m²\n\n'
-      '结果基于理想几何模型，实际加工前请结合板厚、咬口、焊缝和工艺余量复核。';
+      AppStrings.conicalFrustumResults +
+      AppStrings.largeDiameterAMm(largeDiameter.toStringAsFixed(decimals)) +
+      AppStrings.smallDiameterBMm(smallDiameter.toStringAsFixed(decimals)) +
+      AppStrings.heightHMm(height.toStringAsFixed(decimals)) +
+      AppStrings.slantLengthLMm(slant.toStringAsFixed(decimals)) +
+      AppStrings.innerSectorRadiusRMm(innerRadius.toStringAsFixed(decimals)) +
+      AppStrings.outerSectorRadiusRMm(outerRadius.toStringAsFixed(decimals)) +
+      AppStrings.sectorAngle(angle.toStringAsFixed(decimals)) +
+      AppStrings.theoreticalAreaM(area.toStringAsFixed(3)) +
+      AppStrings
+          .resultsUseIdealGeometryCheckThicknessSeamsWeldsAndProcessAllowancesBef;
 }
 
 enum TemplateType { bend, eccentricCone, elbow, tee, squareRound }
@@ -230,7 +232,7 @@ class EngineeringResult {
   final String note;
 
   String report(int decimals) {
-    final buffer = StringBuffer('$title计算结果\n$inputSummary\n');
+    final buffer = StringBuffer(AppStrings.results(title, inputSummary));
     for (final metric in metrics) {
       buffer.writeln(
         '${metric.$1}：${metric.$2.toStringAsFixed(_metricDecimals(metric.$3, decimals))} ${metric.$3}',
@@ -238,7 +240,7 @@ class EngineeringResult {
     }
     if (points.isNotEmpty) {
       buffer
-        ..writeln('\n等分点实长/高度（mm）')
+        ..writeln(AppStrings.dividedPointTrueLengthsHeightsMm)
         ..writeln(
           points
               .asMap()
@@ -250,13 +252,15 @@ class EngineeringResult {
               .join('  '),
         );
     }
-    buffer.write('\n$note\n实际加工前请结合板厚、接缝与工艺余量复核。');
+    buffer.write(
+      AppStrings.checkThicknessSeamsAndProcessAllowancesBeforeFabrication(note),
+    );
     return buffer.toString();
   }
 
   static int _metricDecimals(String unit, int decimals) {
     if (unit == 'm²') return 3;
-    if (unit == '段' || unit == '节') return 0;
+    if (unit == AppStrings.segments || unit == AppStrings.pieces) return 0;
     return decimals;
   }
 
@@ -313,19 +317,20 @@ class EngineeringMath {
     final flat = legA + legB - deduction;
     return EngineeringResult(
       type: TemplateType.bend,
-      title: '单折弯展开',
+      title: AppStrings.singleBend,
       asset: 'assets/components/elbow.png',
       inputSummary:
           'A ${legA.toStringAsFixed(0)} · B ${legB.toStringAsFixed(0)} · ${angle.toStringAsFixed(0)}°',
       inputs: value,
       metrics: [
-        ('折弯余量 BA', allowance, 'mm'),
-        ('单边退让 SB', setback, 'mm'),
-        ('折弯扣除 BD', deduction, 'mm'),
-        ('展开总长 L', flat, 'mm'),
+        (AppStrings.bendAllowanceBA, allowance, 'mm'),
+        (AppStrings.setbackSB, setback, 'mm'),
+        (AppStrings.bendDeductionBD, deduction, 'mm'),
+        (AppStrings.flatLengthL, flat, 'mm'),
       ],
       points: const [],
-      note: '按中性层 K 因子法计算，A、B 为成形后的外侧边长。',
+      note: AppStrings
+          .usesTheNeutralAxisKFactorMethodAAndBAreTheFormedOutsideLegLengths,
     );
   }
 
@@ -350,19 +355,20 @@ class EngineeringMath {
     final area = math.pi * (large + small) / 2 * mean / 1000000;
     return EngineeringResult(
       type: TemplateType.eccentricCone,
-      title: '偏心圆锥台',
+      title: AppStrings.eccentricCone,
       asset: 'assets/components/conical_frustum.png',
       inputSummary:
           'D ${large.toStringAsFixed(0)} · d ${small.toStringAsFixed(0)} · e ${offset.toStringAsFixed(0)}',
       inputs: value,
       metrics: [
-        ('最短素线', points.reduce(math.min), 'mm'),
-        ('最长素线', points.reduce(math.max), 'mm'),
-        ('平均素线', mean, 'mm'),
-        ('理论侧面积', area, 'm²'),
+        (AppStrings.shortestTrueLength, points.reduce(math.min), 'mm'),
+        (AppStrings.longestTrueLength, points.reduce(math.max), 'mm'),
+        (AppStrings.meanTrueLength, mean, 'mm'),
+        (AppStrings.theoreticalSideArea, area, 'm²'),
       ],
       points: points,
-      note: '采用对应母线三角形法，点位从偏心方向起按圆周等分。',
+      note: AppStrings
+          .usesTriangulatedTrueLengthsCircumferencePointsStartInTheOffsetDirectio,
     );
   }
 
@@ -382,20 +388,24 @@ class EngineeringMath {
     );
     return EngineeringResult(
       type: TemplateType.elbow,
-      title: '${angle.toStringAsFixed(0)}°虾米腰弯头',
+      title: AppStrings.segmentedElbow(angle.toStringAsFixed(0)),
       asset: 'assets/components/elbow.png',
-      inputSummary:
-          'D ${diameter.toStringAsFixed(0)} · R ${radius.toStringAsFixed(0)} · $pieces 节',
+      inputSummary: AppStrings.dRPieces(
+        diameter.toStringAsFixed(0),
+        radius.toStringAsFixed(0),
+        pieces,
+      ),
       inputs: value,
       metrics: [
-        ('圆周展开宽度', circumference, 'mm'),
-        ('相邻节转角', angle / (pieces - 1), '°'),
-        ('接口斜切角', jointAngle, '°'),
-        ('中心节轴向节距', centerPitch, 'mm'),
-        ('切口高差', amplitude * 2, 'mm'),
+        (AppStrings.developedWidth, circumference, 'mm'),
+        (AppStrings.anglePerJoint, angle / (pieces - 1), '°'),
+        (AppStrings.miterAngle, jointAngle, '°'),
+        (AppStrings.centerPiecePitch, centerPitch, 'mm'),
+        (AppStrings.cutHeightRange, amplitude * 2, 'mm'),
       ],
       points: points,
-      note: '按等角虾米腰、两端半节模型计算，点位为管周 12 等分切口高度。',
+      note: AppStrings
+          .usesEqualAngleSegmentsWithHalfPiecesAtBothEndsHeightsAreShownAt12Circu,
     );
   }
 
@@ -423,18 +433,22 @@ class EngineeringMath {
     final shifted = points.map((item) => item - minimum).toList();
     return EngineeringResult(
       type: TemplateType.tee,
-      title: '${angle.toStringAsFixed(0)}°圆管相贯',
+      title: AppStrings.pipeIntersection(angle.toStringAsFixed(0)),
       asset: 'assets/components/tee.png',
-      inputSummary:
-          '主管 ${mainDiameter.toStringAsFixed(0)} · 支管 ${branchDiameter.toStringAsFixed(0)} · ${angle.toStringAsFixed(0)}°',
+      inputSummary: AppStrings.mainBranch(
+        mainDiameter.toStringAsFixed(0),
+        branchDiameter.toStringAsFixed(0),
+        angle.toStringAsFixed(0),
+      ),
       inputs: value,
       metrics: [
-        ('支管展开宽度', math.pi * branchDiameter, 'mm'),
-        ('相贯线最大高度', shifted.reduce(math.max), 'mm'),
-        ('等分数', segments.toDouble(), '段'),
+        (AppStrings.branchDevelopedWidth, math.pi * branchDiameter, 'mm'),
+        (AppStrings.maximumCutHeight, shifted.reduce(math.max), 'mm'),
+        (AppStrings.divisions, segments.toDouble(), AppStrings.segments),
       ],
       points: shifted,
-      note: '按两圆柱轴线相交的解析模型计算，点位从支管圆周基准点开始。',
+      note: AppStrings
+          .usesIntersectingCylinderGeometryPointsStartAtTheBranchCircumferenceRef,
     );
   }
 
@@ -469,20 +483,23 @@ class EngineeringMath {
     }
     return EngineeringResult(
       type: TemplateType.squareRound,
-      title: offsetX == 0 && offsetY == 0 ? '同心天圆地方' : '偏心天圆地方',
+      title: offsetX == 0 && offsetY == 0
+          ? AppStrings.centeredSquareToRound
+          : AppStrings.offsetSquareToRound,
       asset: 'assets/components/square_round.png',
       inputSummary:
           '${width.toStringAsFixed(0)}×${depth.toStringAsFixed(0)} · Ø${diameter.toStringAsFixed(0)} · H ${height.toStringAsFixed(0)}',
       inputs: value,
       metrics: [
-        ('最短素线', points.reduce(math.min), 'mm'),
-        ('最长素线', points.reduce(math.max), 'mm'),
-        ('方口周长', rectanglePerimeter, 'mm'),
-        ('圆口周长', math.pi * diameter, 'mm'),
-        ('理论侧面积', area / 1000000, 'm²'),
+        (AppStrings.shortestTrueLength, points.reduce(math.min), 'mm'),
+        (AppStrings.longestTrueLength, points.reduce(math.max), 'mm'),
+        (AppStrings.rectangularPerimeter, rectanglePerimeter, 'mm'),
+        (AppStrings.roundPerimeter, math.pi * diameter, 'mm'),
+        (AppStrings.theoreticalSideArea, area / 1000000, 'm²'),
       ],
       points: points,
-      note: '按方口与圆口周长等分的三角形法计算，点位从方口右上方向顺时针编号。',
+      note: AppStrings
+          .usesTriangulatedDivisionsOfBothPerimetersPointsRunClockwiseFromTheUppe,
     );
   }
 
@@ -590,7 +607,10 @@ class AppStore extends ChangeNotifier {
   final List<HistoryEntry> savedComponents = [];
   final List<EngineeringEntry> engineeringHistory = [];
   final List<EngineeringEntry> savedEngineering = [];
-  final Set<String> favorites = {'同心圆锥台', '同心天圆地方'};
+  final Set<String> favorites = {
+    AppStrings.conicalFrustum,
+    AppStrings.centeredSquareToRound,
+  };
   int decimals = 1;
 
   void seedScreenshotData() {
@@ -624,7 +644,7 @@ class AppStore extends ChangeNotifier {
     history.add(
       HistoryEntry(
         id: 'screenshot-cone-history',
-        title: '同心圆锥台',
+        title: AppStrings.conicalFrustum,
         summary: cone.inputSummary,
         createdAt: now.subtract(const Duration(minutes: 18)),
         result: cone,
@@ -633,7 +653,7 @@ class AppStore extends ChangeNotifier {
     savedComponents.add(
       HistoryEntry(
         id: 'screenshot-cone-project',
-        title: '除尘管道变径节',
+        title: AppStrings.dustDuctReducer,
         summary: cone.inputSummary,
         createdAt: now.subtract(const Duration(days: 1)),
         result: cone,
@@ -670,7 +690,10 @@ class AppStore extends ChangeNotifier {
     decimals = _prefs?.getInt(_decimalsKey) ?? 1;
     favorites
       ..clear()
-      ..addAll(_prefs?.getStringList(_favoritesKey) ?? ['同心圆锥台', '同心天圆地方']);
+      ..addAll(
+        _prefs?.getStringList(_favoritesKey) ??
+            [AppStrings.conicalFrustum, AppStrings.centeredSquareToRound],
+      );
     final raw = _prefs?.getStringList(_historyKey) ?? const [];
     for (final item in raw) {
       try {
@@ -718,7 +741,7 @@ class AppStore extends ChangeNotifier {
       0,
       HistoryEntry(
         id: DateTime.now().microsecondsSinceEpoch.toString(),
-        title: '同心圆锥台',
+        title: AppStrings.conicalFrustum,
         summary: result.inputSummary,
         createdAt: DateTime.now(),
         result: result,
@@ -748,7 +771,7 @@ class AppStore extends ChangeNotifier {
       0,
       HistoryEntry(
         id: DateTime.now().microsecondsSinceEpoch.toString(),
-        title: '同心圆锥台',
+        title: AppStrings.conicalFrustum,
         summary: result.inputSummary,
         createdAt: DateTime.now(),
         result: result,
@@ -937,25 +960,25 @@ class _AppShellState extends State<AppShell> {
           child: Row(
             children: [
               _NavItem(
-                label: '展开',
+                label: AppStrings.layouts,
                 icon: CupertinoIcons.square_grid_2x2,
                 selected: _tab == 0,
                 onTap: () => setState(() => _tab = 0),
               ),
               _NavItem(
-                label: '项目',
+                label: AppStrings.projects,
                 icon: CupertinoIcons.folder,
                 selected: _tab == 1,
                 onTap: () => setState(() => _tab = 1),
               ),
               _NavItem(
-                label: '历史',
+                label: AppStrings.history,
                 icon: CupertinoIcons.clock,
                 selected: _tab == 2,
                 onTap: () => setState(() => _tab = 2),
               ),
               _NavItem(
-                label: '设置',
+                label: AppStrings.settings,
                 icon: CupertinoIcons.gear,
                 selected: _tab == 3,
                 onTap: () => setState(() => _tab = 3),
@@ -1019,24 +1042,41 @@ class _NavItem extends StatelessWidget {
 }
 
 void openTemplate(BuildContext context, String name) {
-  if (name == '同心圆锥台' || name == '锥台') {
+  if (name == AppStrings.conicalFrustum || name == AppStrings.frustum) {
     Navigator.of(
       context,
     ).push(CupertinoPageRoute<void>(builder: (_) => const CalculatorPage()));
     return;
   }
   final type = switch (name) {
-    '折弯' || '单折弯' => TemplateType.bend,
-    '偏心大小头' || '偏心圆锥台' => TemplateType.eccentricCone,
-    '弯头' || '90°弯头' || '虾米腰' || '90°虾米腰弯头' => TemplateType.elbow,
-    '三通' || '圆管三通' || '三通正交' || '等径圆管三通' || '相贯' => TemplateType.tee,
-    '天圆地方' || '方圆过渡' || '同心天圆地方' || '单偏心天圆地方' => TemplateType.squareRound,
+    AppStrings.bends || AppStrings.singleBendH0500de => TemplateType.bend,
+    AppStrings.eccentricReducer ||
+    AppStrings.eccentricCone => TemplateType.eccentricCone,
+    AppStrings.elbows ||
+    AppStrings.label90Elbow ||
+    AppStrings.segmentedElbowH5a20f0 ||
+    AppStrings.label90SegmentedElbow => TemplateType.elbow,
+    AppStrings.tees ||
+    AppStrings.pipeTee ||
+    AppStrings.rightAngleTee ||
+    AppStrings.equalPipeTee ||
+    AppStrings.intersections => TemplateType.tee,
+    AppStrings.squareToRound ||
+    AppStrings.squareToRoundHa49e95 ||
+    AppStrings.centeredSquareToRound ||
+    AppStrings.offsetTransition => TemplateType.squareRound,
     _ => TemplateType.bend,
   };
   Navigator.of(context).push(
     CupertinoPageRoute<void>(
-      builder: (_) =>
-          GenericCalculatorPage(type: type, eccentric: name.contains('偏心')),
+      builder: (_) => GenericCalculatorPage(
+        type: type,
+        eccentric:
+            name == AppStrings.eccentricReducer ||
+            name == AppStrings.eccentricCone ||
+            name == AppStrings.offsetTransition ||
+            name == AppStrings.offsetSquareToRound,
+      ),
     ),
   );
 }
@@ -1052,20 +1092,26 @@ Future<void> shareText(BuildContext context, String text) async {
     );
     if (!context.mounted) return;
     if (result.status == ShareResultStatus.unavailable) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('当前设备没有可用的分享方式')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(AppStrings.sharingIsUnavailableOnThisDevice),
+        ),
+      );
     }
   } on PlatformException catch (error) {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('无法打开系统分享：${error.message ?? '请稍后重试'}')),
+      SnackBar(
+        content: Text(
+          AppStrings.cannotOpenSharing(error.message ?? AppStrings.tryAgain),
+        ),
+      ),
     );
   } catch (_) {
     if (!context.mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('无法打开系统分享，请稍后重试')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text(AppStrings.cannotOpenSharingTryAgain)),
+    );
   }
 }
 
@@ -1078,17 +1124,26 @@ class ExpandHome extends StatefulWidget {
 
 class _ExpandHomeState extends State<ExpandHome> {
   static const _recent = [
-    _Component('同心圆锥台', 'assets/components/conical_frustum.png'),
-    _Component('天圆地方', 'assets/components/square_round.png'),
-    _Component('90°弯头', 'assets/components/elbow.png'),
-    _Component('圆管三通', 'assets/components/tee.png'),
+    _Component(
+      AppStrings.conicalFrustum,
+      'assets/components/conical_frustum.png',
+    ),
+    _Component(AppStrings.squareToRound, 'assets/components/square_round.png'),
+    _Component(AppStrings.label90Elbow, 'assets/components/elbow.png'),
+    _Component(AppStrings.pipeTee, 'assets/components/tee.png'),
   ];
 
   static const _favorites = [
-    _Component('偏心大小头', 'assets/components/conical_frustum.png'),
-    _Component('方圆过渡', 'assets/components/square_round.png'),
-    _Component('三通正交', 'assets/components/tee.png'),
-    _Component('虾米腰', 'assets/components/elbow.png'),
+    _Component(
+      AppStrings.eccentricReducer,
+      'assets/components/conical_frustum.png',
+    ),
+    _Component(
+      AppStrings.squareToRoundHa49e95,
+      'assets/components/square_round.png',
+    ),
+    _Component(AppStrings.rightAngleTee, 'assets/components/tee.png'),
+    _Component(AppStrings.segmentedElbowH5a20f0, 'assets/components/elbow.png'),
   ];
 
   @override
@@ -1112,24 +1167,30 @@ class _ExpandHomeState extends State<ExpandHome> {
                   sliver: SliverList.list(
                     children: [
                       _SectionHeader(
-                        title: '最近使用',
-                        action: '全部',
-                        onAction: () =>
-                            _openCollection(context, '最近使用', _recent),
+                        title: AppStrings.recent,
+                        action: AppStrings.all,
+                        onAction: () => _openCollection(
+                          context,
+                          AppStrings.recent,
+                          _recent,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       _ComponentRow(items: _recent),
                       const SizedBox(height: 26),
                       _SectionHeader(
-                        title: '收藏',
-                        action: '全部',
-                        onAction: () =>
-                            _openCollection(context, '收藏', _favorites),
+                        title: AppStrings.favorites,
+                        action: AppStrings.all,
+                        onAction: () => _openCollection(
+                          context,
+                          AppStrings.favorites,
+                          _favorites,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       _ComponentRow(items: _favorites, favorite: true),
                       const SizedBox(height: 28),
-                      const _SectionHeader(title: '常用分类'),
+                      const _SectionHeader(title: AppStrings.categories),
                       const SizedBox(height: 13),
                       const _CategoryGrid(),
                     ],
@@ -1183,7 +1244,7 @@ class _SearchHeader extends StatelessWidget {
       ),
       child: Semantics(
         button: true,
-        label: '搜索构件、俗称',
+        label: AppStrings.searchShapes,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: onSearch,
@@ -1199,7 +1260,7 @@ class _SearchHeader extends StatelessWidget {
                 Icon(CupertinoIcons.search, size: 19, color: _muted),
                 SizedBox(width: 9),
                 Text(
-                  '搜索构件、俗称',
+                  AppStrings.searchShapes,
                   style: TextStyle(color: Color(0xFF8A94A5), fontSize: 14),
                 ),
               ],
@@ -1217,17 +1278,45 @@ class _ComponentSearchDelegate extends SearchDelegate<void> {
   final ValueChanged<String> onOpen;
 
   static const items = [
-    ('同心圆锥台', '圆锥 大小头 锥台', 'assets/components/conical_frustum.png'),
-    ('偏心圆锥台', '偏心 大小头', 'assets/components/conical_frustum.png'),
-    ('同心天圆地方', '方圆过渡 天方地圆', 'assets/components/square_round.png'),
-    ('单偏心天圆地方', '方圆过渡 偏心', 'assets/components/square_round.png'),
-    ('90°虾米腰弯头', '弯头 圆管 虾米腰', 'assets/components/elbow.png'),
-    ('等径圆管三通', '三通 正交 T型 相贯', 'assets/components/tee.png'),
-    ('单折弯', '折弯 展开 K因子', 'assets/components/elbow.png'),
+    (
+      AppStrings.conicalFrustum,
+      AppStrings.coneReducerFrustum,
+      'assets/components/conical_frustum.png',
+    ),
+    (
+      AppStrings.eccentricCone,
+      AppStrings.eccentricReducerH79dc5c,
+      'assets/components/conical_frustum.png',
+    ),
+    (
+      AppStrings.centeredSquareToRound,
+      AppStrings.squareRoundTransition,
+      'assets/components/square_round.png',
+    ),
+    (
+      AppStrings.offsetTransition,
+      AppStrings.squareRoundOffsetTransition,
+      'assets/components/square_round.png',
+    ),
+    (
+      AppStrings.label90SegmentedElbow,
+      AppStrings.elbowPipeSegmentedMiter,
+      'assets/components/elbow.png',
+    ),
+    (
+      AppStrings.equalPipeTee,
+      AppStrings.teeRightAngleIntersectionSaddle,
+      'assets/components/tee.png',
+    ),
+    (
+      AppStrings.singleBendH0500de,
+      AppStrings.bendFlatPatternKFactor,
+      'assets/components/elbow.png',
+    ),
   ];
 
   @override
-  String get searchFieldLabel => '搜索构件、俗称';
+  String get searchFieldLabel => AppStrings.searchShapes;
 
   @override
   List<Widget> buildActions(BuildContext context) => [
@@ -1257,7 +1346,9 @@ class _ComponentSearchDelegate extends SearchDelegate<void> {
         )
         .toList();
     if (results.isEmpty) {
-      return const Center(child: Text('没有找到构件，试试“弯头”或“大小头”'));
+      return const Center(
+        child: Text(AppStrings.noShapesFoundTryElbowOrReducer),
+      );
     }
     return ListView.separated(
       padding: const EdgeInsets.all(18),
@@ -1276,7 +1367,7 @@ class _ComponentSearchDelegate extends SearchDelegate<void> {
             item.$1,
             style: const TextStyle(fontWeight: FontWeight.w700),
           ),
-          subtitle: const Text('参数输入 · 展开数据 · 点位图'),
+          subtitle: const Text(AppStrings.dimensionsDevelopmentPoints),
           trailing: const Icon(
             CupertinoIcons.chevron_right,
             size: 17,
@@ -1385,7 +1476,7 @@ class _TemplateCollectionPage extends StatelessWidget {
               item.name,
               style: const TextStyle(fontWeight: FontWeight.w700),
             ),
-            subtitle: const Text('参数输入 · 展开数据 · 点位图'),
+            subtitle: const Text(AppStrings.dimensionsDevelopmentPoints),
             trailing: const Icon(
               CupertinoIcons.chevron_right,
               size: 17,
@@ -1475,7 +1566,7 @@ class _ComponentTileState extends State<_ComponentTile> {
                 children: [
                   Expanded(
                     child: Hero(
-                      tag: '${widget.component.asset}-${widget.component.name}',
+                      tag: '${widget.component.asset}-${widget.component.name}-${widget.favorite}',
                       child: Image.asset(
                         widget.component.asset,
                         fit: BoxFit.contain,
@@ -1521,12 +1612,16 @@ class _CategoryGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const categories = [
-      ('折弯', CupertinoIcons.wand_stars, null),
-      ('弯头', null, 'assets/components/elbow.png'),
-      ('三通', null, 'assets/components/tee.png'),
-      ('锥台', null, 'assets/components/conical_frustum.png'),
-      ('方圆过渡', null, 'assets/components/square_round.png'),
-      ('相贯', CupertinoIcons.link, null),
+      (AppStrings.bends, CupertinoIcons.wand_stars, null),
+      (AppStrings.elbows, null, 'assets/components/elbow.png'),
+      (AppStrings.tees, null, 'assets/components/tee.png'),
+      (AppStrings.frustum, null, 'assets/components/conical_frustum.png'),
+      (
+        AppStrings.squareToRoundHa49e95,
+        null,
+        'assets/components/square_round.png',
+      ),
+      (AppStrings.intersections, CupertinoIcons.link, null),
     ];
     return GridView.builder(
       itemCount: categories.length,
@@ -1615,11 +1710,14 @@ class _GenericCalculatorPageState extends State<GenericCalculatorPage> {
   String? _error;
 
   String get _title => switch (widget.type) {
-    TemplateType.bend => '单折弯展开',
-    TemplateType.eccentricCone => '偏心圆锥台',
-    TemplateType.elbow => '90°虾米腰弯头',
-    TemplateType.tee => '圆管相贯',
-    TemplateType.squareRound => widget.eccentric ? '单偏心天圆地方' : '同心天圆地方',
+    TemplateType.bend => AppStrings.singleBend,
+    TemplateType.eccentricCone => AppStrings.eccentricCone,
+    TemplateType.elbow => AppStrings.label90SegmentedElbow,
+    TemplateType.tee => AppStrings.pipeIntersectionHe2b00c,
+    TemplateType.squareRound =>
+      widget.eccentric
+          ? AppStrings.offsetTransition
+          : AppStrings.centeredSquareToRound,
   };
 
   String get _asset => switch (widget.type) {
@@ -1634,46 +1732,76 @@ class _GenericCalculatorPageState extends State<GenericCalculatorPage> {
     super.initState();
     _specs = switch (widget.type) {
       TemplateType.bend => const [
-        _GenericSpec('legA', '成形边长 A', 'mm', '300'),
-        _GenericSpec('legB', '成形边长 B', 'mm', '200'),
-        _GenericSpec('radius', '内弯半径 R', 'mm', '3'),
-        _GenericSpec('thickness', '板厚 t', 'mm', '2'),
-        _GenericSpec('angle', '折弯角度 θ', '°', '90'),
-        _GenericSpec('kFactor', 'K 因子', '', '0.40'),
+        _GenericSpec('legA', AppStrings.outsideLegA, 'mm', '300'),
+        _GenericSpec('legB', AppStrings.outsideLegB, 'mm', '200'),
+        _GenericSpec('radius', AppStrings.insideRadiusR, 'mm', '3'),
+        _GenericSpec('thickness', AppStrings.thicknessT, 'mm', '2'),
+        _GenericSpec('angle', AppStrings.bendAngle, '°', '90'),
+        _GenericSpec('kFactor', AppStrings.kFactor, '', '0.40'),
       ],
       TemplateType.eccentricCone => const [
-        _GenericSpec('large', '大端直径 D', 'mm', '1000'),
-        _GenericSpec('small', '小端直径 d', 'mm', '600'),
-        _GenericSpec('height', '垂直高度 H', 'mm', '800'),
-        _GenericSpec('offset', '偏心距 e', 'mm', '150'),
-        _GenericSpec('segments', '圆周等分 n', '段', '12', integer: true),
+        _GenericSpec('large', AppStrings.largeDiameterD, 'mm', '1000'),
+        _GenericSpec('small', AppStrings.smallDiameterD, 'mm', '600'),
+        _GenericSpec('height', AppStrings.heightH, 'mm', '800'),
+        _GenericSpec('offset', AppStrings.offsetE, 'mm', '150'),
+        _GenericSpec(
+          'segments',
+          AppStrings.divisionsN,
+          AppStrings.segments,
+          '12',
+          integer: true,
+        ),
       ],
       TemplateType.elbow => const [
-        _GenericSpec('diameter', '管道直径 D', 'mm', '500'),
-        _GenericSpec('radius', '中心弯曲半径 R', 'mm', '750'),
-        _GenericSpec('angle', '弯头角度 θ', '°', '90'),
-        _GenericSpec('pieces', '节数 n', '节', '4', integer: true),
+        _GenericSpec('diameter', AppStrings.pipeDiameterD, 'mm', '500'),
+        _GenericSpec('radius', AppStrings.centerlineRadiusR, 'mm', '750'),
+        _GenericSpec('angle', AppStrings.elbowAngle, '°', '90'),
+        _GenericSpec(
+          'pieces',
+          AppStrings.piecesN,
+          AppStrings.pieces,
+          '4',
+          integer: true,
+        ),
       ],
       TemplateType.tee => const [
-        _GenericSpec('mainDiameter', '主管直径 D', 'mm', '600'),
-        _GenericSpec('branchDiameter', '支管直径 d', 'mm', '400'),
-        _GenericSpec('angle', '轴线夹角 θ', '°', '90'),
-        _GenericSpec('segments', '圆周等分 n', '段', '12', integer: true),
+        _GenericSpec('mainDiameter', AppStrings.mainDiameterD, 'mm', '600'),
+        _GenericSpec('branchDiameter', AppStrings.branchDiameterD, 'mm', '400'),
+        _GenericSpec('angle', AppStrings.axisAngle, '°', '90'),
+        _GenericSpec(
+          'segments',
+          AppStrings.divisionsN,
+          AppStrings.segments,
+          '12',
+          integer: true,
+        ),
       ],
       TemplateType.squareRound => [
-        const _GenericSpec('width', '方口宽度 A', 'mm', '800'),
-        const _GenericSpec('depth', '方口深度 B', 'mm', '600'),
-        const _GenericSpec('diameter', '圆口直径 D', 'mm', '500'),
-        const _GenericSpec('height', '垂直高度 H', 'mm', '700'),
+        const _GenericSpec('width', AppStrings.rectangleWidthA, 'mm', '800'),
+        const _GenericSpec('depth', AppStrings.rectangleDepthB, 'mm', '600'),
+        const _GenericSpec('diameter', AppStrings.roundDiameterD, 'mm', '500'),
+        const _GenericSpec('height', AppStrings.heightH, 'mm', '700'),
         _GenericSpec(
           'offsetX',
-          '横向偏心 e₁',
+          AppStrings.offsetXE,
           'mm',
           widget.eccentric ? '120' : '0',
           signed: true,
         ),
-        const _GenericSpec('offsetY', '纵向偏心 e₂', 'mm', '0', signed: true),
-        const _GenericSpec('segments', '周长等分 n', '段', '16', integer: true),
+        const _GenericSpec(
+          'offsetY',
+          AppStrings.offsetYE,
+          'mm',
+          '0',
+          signed: true,
+        ),
+        const _GenericSpec(
+          'segments',
+          AppStrings.perimeterDivisionsN,
+          AppStrings.segments,
+          '16',
+          integer: true,
+        ),
       ],
     };
     _controllers = _specs
@@ -1702,45 +1830,47 @@ class _GenericCalculatorPageState extends State<GenericCalculatorPage> {
   String? _validate(Map<String, double> value) {
     for (final entry in value.entries) {
       if (entry.key.startsWith('offset')) continue;
-      if (entry.value <= 0) return '所有尺寸与角度必须大于 0';
+      if (entry.value <= 0) {
+        return AppStrings.allDimensionsAndAnglesMustBePositive;
+      }
     }
     return switch (widget.type) {
       TemplateType.bend =>
         value['angle']! >= 180
-            ? '折弯角度必须小于 180°'
+            ? AppStrings.bendAngleMustBeLessThan180
             : value['kFactor']! < 0 || value['kFactor']! > 1
-            ? 'K 因子必须在 0–1 之间'
+            ? AppStrings.kFactorMustBeBetween0And1
             : null,
       TemplateType.eccentricCone =>
         value['large']! <= value['small']!
-            ? '大端直径必须大于小端直径'
+            ? AppStrings.largeDiameterMustExceedSmallDiameter
             : value['offset']!.abs() > (value['large']! - value['small']!) / 2
-            ? '偏心距过大，小端轮廓已超出大端'
-            : _integerRange(value['segments']!, 8, 48, '等分数'),
+            ? AppStrings.offsetIsTooLargeTheSmallEndExtendsBeyondTheLargeEnd
+            : _integerRange(value['segments']!, 8, 48, AppStrings.divisions),
       TemplateType.elbow =>
         value['radius']! < value['diameter']! / 2
-            ? '中心弯曲半径不能小于管道半径'
+            ? AppStrings.centerlineRadiusCannotBeLessThanThePipeRadius
             : value['angle']! >= 180
-            ? '弯头角度必须小于 180°'
-            : _integerRange(value['pieces']!, 2, 12, '节数'),
+            ? AppStrings.elbowAngleMustBeLessThan180
+            : _integerRange(value['pieces']!, 2, 12, AppStrings.pieceCount),
       TemplateType.tee =>
         value['branchDiameter']! > value['mainDiameter']!
-            ? '支管直径不能大于主管直径'
+            ? AppStrings.branchDiameterCannotExceedMainDiameter
             : value['angle']! <= 10 || value['angle']! >= 170
-            ? '轴线夹角须在 10°–170° 之间'
-            : _integerRange(value['segments']!, 8, 48, '等分数'),
+            ? AppStrings.axisAngleMustBeBetween10And170
+            : _integerRange(value['segments']!, 8, 48, AppStrings.divisions),
       TemplateType.squareRound =>
         value['offsetX']!.abs() > (value['width']! + value['diameter']!) / 2 ||
                 value['offsetY']!.abs() >
                     (value['depth']! + value['diameter']!) / 2
-            ? '偏心距过大，两个端面投影无法形成有效过渡'
-            : _integerRange(value['segments']!, 8, 48, '等分数'),
+            ? AppStrings.offsetIsTooLargeToFormAValidTransition
+            : _integerRange(value['segments']!, 8, 48, AppStrings.divisions),
     };
   }
 
   String? _integerRange(double value, int minimum, int maximum, String name) {
     if (value != value.roundToDouble() || value < minimum || value > maximum) {
-      return '$name须为 $minimum–$maximum 之间的整数';
+      return AppStrings.mustBeAWholeNumberFromTo(name, minimum, maximum);
     }
     return null;
   }
@@ -1749,7 +1879,7 @@ class _GenericCalculatorPageState extends State<GenericCalculatorPage> {
     FocusScope.of(context).unfocus();
     final values = _values();
     if (values == null) {
-      setState(() => _error = '请完整填写所有参数');
+      setState(() => _error = AppStrings.enterAllRequiredValues);
       return;
     }
     final error = _validate(values);
@@ -1847,7 +1977,8 @@ class _GenericCalculatorPageState extends State<GenericCalculatorPage> {
                   const Padding(
                     padding: EdgeInsets.only(top: 12),
                     child: Text(
-                      '内部计算保留完整精度，显示精度可在设置中调整。',
+                      AppStrings
+                          .calculationsRetainFullPrecisionSetDisplayedDecimalPlacesInSettings,
                       style: TextStyle(color: _muted, fontSize: 12),
                     ),
                   ),
@@ -1872,7 +2003,7 @@ class _GenericCalculatorPageState extends State<GenericCalculatorPage> {
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size.fromHeight(50),
                       ),
-                      child: const Text('清空'),
+                      child: const Text(AppStrings.clear),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -1885,7 +2016,7 @@ class _GenericCalculatorPageState extends State<GenericCalculatorPage> {
                         minimumSize: const Size.fromHeight(50),
                       ),
                       child: const Text(
-                        '计算',
+                        AppStrings.calculate,
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
@@ -1900,7 +2031,7 @@ class _GenericCalculatorPageState extends State<GenericCalculatorPage> {
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size.fromHeight(50),
                       ),
-                      child: const Text('示例'),
+                      child: const Text(AppStrings.example),
                     ),
                   ),
                 ],
@@ -2044,11 +2175,20 @@ class _GenericFormulaSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = switch (type) {
-      TemplateType.bend => '采用 BA = πθ/180 × (R + Kt) 计算中性层折弯余量，再由外侧退让量求折弯扣除。',
-      TemplateType.eccentricCone => '将大小端圆周对应等分点连接，使用三维距离公式逐点求各条素线实长。',
-      TemplateType.elbow => '按等角虾米腰、两端半节模型划分转角，斜切口使用圆柱与斜平面相交的正弦曲线。',
-      TemplateType.tee => '建立两个相交圆柱的解析方程，按支管圆周等分求每个相贯点高度。',
-      TemplateType.squareRound => '将方口周长与圆口圆周等分，以三角形法逐点计算连接素线和近似侧面积。',
+      TemplateType.bend =>
+        AppStrings.bendAllowanceBA180RKtBendDeductionUsesTheOutsideSetbacks,
+      TemplateType.eccentricCone =>
+        AppStrings
+            .connectCorrespondingCircumferencePointsAndUse3DDistancesToFindEachTrue,
+      TemplateType.elbow =>
+        AppStrings
+            .equalAngleSegmentsAndHalfPiecesAtBothEndsDefineTheJointsMiterProfilesU,
+      TemplateType.tee =>
+        AppStrings
+            .intersectingCylinderEquationsGiveCutHeightsAtDividedBranchCircumferenc,
+      TemplateType.squareRound =>
+        AppStrings
+            .triangulateDividedRectangularAndRoundPerimeterPointsForTrueLengthsAndA,
     };
     return SafeArea(
       child: Padding(
@@ -2058,14 +2198,15 @@ class _GenericFormulaSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              '计算模型',
+              AppStrings.calculationModel,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 14),
             Text(text, style: const TextStyle(fontSize: 14, height: 1.6)),
             const SizedBox(height: 12),
             const Text(
-              '结果不自动包含咬口、焊缝、折边、切割缝和材料回弹补偿。',
+              AppStrings
+                  .resultsExcludeSeamWeldFlangeKerfAndSpringbackAllowances,
               style: TextStyle(color: Color(0xFFE54545), fontSize: 13),
             ),
           ],
@@ -2101,7 +2242,7 @@ class _GenericResultPageState extends State<GenericResultPage> {
           icon: const Icon(CupertinoIcons.chevron_left),
         ),
         title: const Text(
-          '计算结果',
+          AppStrings.resultsH45ba55,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
         ),
         actions: [
@@ -2180,32 +2321,34 @@ class _GenericResultPageState extends State<GenericResultPage> {
               children: [
                 _ActionChip(
                   icon: CupertinoIcons.doc_on_doc,
-                  label: '复制',
+                  label: AppStrings.copy,
                   onTap: () async {
                     await Clipboard.setData(
                       ClipboardData(text: result.report(decimals)),
                     );
                     if (!context.mounted) return;
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(const SnackBar(content: Text('结果已复制')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text(AppStrings.resultCopied)),
+                    );
                   },
                 ),
                 const SizedBox(width: 8),
                 _ActionChip(
                   icon: CupertinoIcons.share,
-                  label: '分享',
+                  label: AppStrings.share,
                   onTap: () => shareText(context, result.report(decimals)),
                 ),
                 const SizedBox(width: 8),
                 _ActionChip(
                   icon: CupertinoIcons.folder_badge_plus,
-                  label: '存入项目',
+                  label: AppStrings.saveToProject,
                   onTap: () async {
                     await appStore.addEngineeringToProject(result);
                     if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('已存入“现场计算”项目')),
+                      const SnackBar(
+                        content: Text(AppStrings.savedToFieldCalculations),
+                      ),
                     );
                   },
                 ),
@@ -2215,7 +2358,7 @@ class _GenericResultPageState extends State<GenericResultPage> {
             Row(
               children: [
                 const Text(
-                  '展开与点位',
+                  AppStrings.developmentPoints,
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                 ),
                 const Spacer(),
@@ -2245,7 +2388,7 @@ class _GenericResultPageState extends State<GenericResultPage> {
             ),
             const SizedBox(height: 8),
             const Text(
-              '不作为 1:1 打印模板，实际加工前请复核。',
+              AppStrings.notA11CuttingTemplateVerifyBeforeFabrication,
               style: TextStyle(
                 color: Color(0xFFE54545),
                 fontSize: 12,
@@ -2298,7 +2441,7 @@ class _EngineeringPainter extends CustomPainter {
       _paintLabel(
         canvas,
         Offset(size.width * .35, size.height * .80),
-        '展开 L ${result.metrics.last.$2.toStringAsFixed(1)} mm',
+        AppStrings.flatLMm(result.metrics.last.$2.toStringAsFixed(1)),
       );
       return;
     }
@@ -2334,12 +2477,12 @@ class _EngineeringPainter extends CustomPainter {
     _paintLabel(
       canvas,
       const Offset(25, 18),
-      '最大 ${maximum.toStringAsFixed(1)} mm',
+      AppStrings.maxMm(maximum.toStringAsFixed(1)),
     );
     _paintLabel(
       canvas,
       const Offset(25, 36),
-      '最小 ${minimum.toStringAsFixed(1)} mm',
+      AppStrings.minMm(minimum.toStringAsFixed(1)),
     );
   }
 
@@ -2378,8 +2521,13 @@ class CalculatorPage extends StatefulWidget {
 class _CalculatorPageState extends State<CalculatorPage> {
   int _unit = 0;
   late final List<TextEditingController> _controllers;
-  final labels = ['大端直径 A', '小端直径 B', '高度 H', '分段数 n'];
-  final units = ['mm', 'mm', 'mm', '段'];
+  final labels = [
+    AppStrings.largeDiameterA,
+    AppStrings.smallDiameterB,
+    AppStrings.heightHHb1964e,
+    AppStrings.divisionsNHeadad9,
+  ];
+  final units = ['mm', 'mm', 'mm', AppStrings.segments];
   String? _error;
 
   @override
@@ -2444,7 +2592,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
         .map((item) => double.tryParse(item.text))
         .toList();
     if (parsed.any((item) => item == null)) {
-      setState(() => _error = '请完整填写所有参数');
+      setState(() => _error = AppStrings.enterAllRequiredValues);
       return;
     }
     const factors = [1.0, 10.0, 1000.0];
@@ -2454,15 +2602,15 @@ class _CalculatorPageState extends State<CalculatorPage> {
     final height = parsed[2]! * factor;
     final segments = parsed[3]!.round();
     if (large <= 0 || small <= 0 || height <= 0) {
-      setState(() => _error = '尺寸必须大于 0');
+      setState(() => _error = AppStrings.dimensionsMustBePositive);
       return;
     }
     if (large <= small) {
-      setState(() => _error = '大端直径必须大于小端直径');
+      setState(() => _error = AppStrings.largeDiameterMustExceedSmallDiameter);
       return;
     }
     if (segments < 6 || segments > 96 || parsed[3] != segments) {
-      setState(() => _error = '分段数须为 6–96 之间的整数');
+      setState(() => _error = AppStrings.divisionsMustBeAWholeNumberFrom6To96);
       return;
     }
     final result = ConeResult.calculate(
@@ -2493,20 +2641,23 @@ class _CalculatorPageState extends State<CalculatorPage> {
           icon: const Icon(CupertinoIcons.chevron_left, size: 23),
         ),
         title: const Text(
-          '同心圆锥台',
+          AppStrings.conicalFrustum,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
         ),
         actions: [
           AnimatedBuilder(
             animation: appStore,
             builder: (context, _) => IconButton(
-              tooltip: appStore.favorites.contains('同心圆锥台') ? '取消收藏' : '收藏',
-              onPressed: () => appStore.toggleFavorite('同心圆锥台'),
+              tooltip: appStore.favorites.contains(AppStrings.conicalFrustum)
+                  ? AppStrings.removeFavorite
+                  : AppStrings.favorites,
+              onPressed: () =>
+                  appStore.toggleFavorite(AppStrings.conicalFrustum),
               icon: Icon(
-                appStore.favorites.contains('同心圆锥台')
+                appStore.favorites.contains(AppStrings.conicalFrustum)
                     ? CupertinoIcons.star_fill
                     : CupertinoIcons.star,
-                color: appStore.favorites.contains('同心圆锥台')
+                color: appStore.favorites.contains(AppStrings.conicalFrustum)
                     ? const Color(0xFFFFB000)
                     : _ink,
                 size: 22,
@@ -2514,7 +2665,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
             ),
           ),
           IconButton(
-            tooltip: '计算说明',
+            tooltip: AppStrings.calculationNotes,
             onPressed: () => showModalBottomSheet<void>(
               context: context,
               showDragHandle: true,
@@ -2572,7 +2723,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   const Padding(
                     padding: EdgeInsets.only(top: 9, left: 4),
                     child: Text(
-                      '分段数越大，展开越精细，建议 12–24 段。',
+                      AppStrings.moreDivisionsGiveAFinerLayoutTypicallyUse1224,
                       style: TextStyle(color: _muted, fontSize: 12),
                     ),
                   ),
@@ -2598,7 +2749,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text('清空'),
+                      child: const Text(AppStrings.clear),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -2614,7 +2765,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         ),
                       ),
                       child: const Text(
-                        '计算',
+                        AppStrings.calculate,
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
@@ -2634,7 +2785,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text('示例'),
+                      child: const Text(AppStrings.example),
                     ),
                   ),
                 ],
@@ -2660,17 +2811,19 @@ class _FormulaSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              '同心圆锥台 · 计算说明',
+              AppStrings.conicalFrustumNotes,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 14),
             const Text(
-              '按理想几何中性层计算。母线长度由高度与两端半径差求得，再由相似三角形得到展开扇形的内外半径和圆心角。',
+              AppStrings
+                  .usesIdealNeutralSurfaceGeometryHeightAndRadiusDifferenceGiveTheSlantLe,
               style: TextStyle(fontSize: 14, height: 1.6),
             ),
             const SizedBox(height: 12),
             Text(
-              '适用条件：A ＞ B ＞ 0，分段数 6–96。结果不含咬口、焊缝、折边和切割余量。',
+              AppStrings
+                  .requiresAB0And696DivisionsResultsExcludeSeamsWeldsFlangesAndCuttingAll,
               style: TextStyle(
                 color: Colors.red.shade700,
                 fontSize: 13,
@@ -2734,10 +2887,10 @@ class _DimensionIllustration extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _Legend('A', '大端直径'),
-                _Legend('B', '小端直径'),
-                _Legend('H', '高度'),
-                _Legend('n', '分段数'),
+                _Legend('A', AppStrings.largeDiameter),
+                _Legend('B', AppStrings.smallDiameter),
+                _Legend('H', AppStrings.height),
+                _Legend('n', AppStrings.divisionsH7c6534),
               ],
             ),
           ),
@@ -2839,7 +2992,7 @@ class _UnitSwitch extends StatelessWidget {
     return Row(
       children: [
         const Text(
-          '单位',
+          AppStrings.unit,
           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
         ),
         const Spacer(),
@@ -2998,12 +3151,28 @@ class _ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     final decimals = appStore.decimals;
     final results = [
-      ('母线实长 L', _result.slant.toStringAsFixed(decimals), 'mm'),
-      ('扇形内半径 R₁', _result.innerRadius.toStringAsFixed(decimals), 'mm'),
-      ('扇形外半径 R₂', _result.outerRadius.toStringAsFixed(decimals), 'mm'),
-      ('圆心角 θ', _result.angle.toStringAsFixed(decimals), '°'),
-      ('理论下料面积 S', _result.area.toStringAsFixed(3), 'm²'),
-      ('展开分段', _result.segments.toString(), '段'),
+      (AppStrings.slantLengthL, _result.slant.toStringAsFixed(decimals), 'mm'),
+      (
+        AppStrings.innerRadiusR,
+        _result.innerRadius.toStringAsFixed(decimals),
+        'mm',
+      ),
+      (
+        AppStrings.outerRadiusR,
+        _result.outerRadius.toStringAsFixed(decimals),
+        'mm',
+      ),
+      (
+        AppStrings.sectorAngleHdd1ffb,
+        _result.angle.toStringAsFixed(decimals),
+        '°',
+      ),
+      (AppStrings.theoreticalAreaS, _result.area.toStringAsFixed(3), 'm²'),
+      (
+        AppStrings.layoutDivisions,
+        _result.segments.toString(),
+        AppStrings.segments,
+      ),
     ];
     return Scaffold(
       appBar: AppBar(
@@ -3015,12 +3184,12 @@ class _ResultPageState extends State<ResultPage> {
           icon: const Icon(CupertinoIcons.chevron_left, size: 23),
         ),
         title: const Text(
-          '计算结果',
+          AppStrings.resultsH45ba55,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
         ),
         actions: [
           IconButton(
-            tooltip: '分享结果',
+            tooltip: AppStrings.shareResult,
             onPressed: () =>
                 shareText(context, _result.report(appStore.decimals)),
             icon: const Icon(CupertinoIcons.share, size: 22),
@@ -3036,11 +3205,14 @@ class _ResultPageState extends State<ResultPage> {
             const Row(
               children: [
                 Text(
-                  '计算结果',
+                  AppStrings.resultsH45ba55,
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                 ),
                 SizedBox(width: 8),
-                Text('同心圆锥台', style: TextStyle(color: _muted, fontSize: 13)),
+                Text(
+                  AppStrings.conicalFrustum,
+                  style: TextStyle(color: _muted, fontSize: 13),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -3100,33 +3272,37 @@ class _ResultPageState extends State<ResultPage> {
               children: [
                 _ActionChip(
                   icon: CupertinoIcons.doc_on_doc,
-                  label: '复制结果',
+                  label: AppStrings.copyResult,
                   onTap: () async {
                     await Clipboard.setData(
                       ClipboardData(text: _result.report(appStore.decimals)),
                     );
                     if (!context.mounted) return;
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(const SnackBar(content: Text('计算结果已复制')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(AppStrings.calculationCopied),
+                      ),
+                    );
                   },
                 ),
                 const SizedBox(width: 8),
                 _ActionChip(
                   icon: CupertinoIcons.share,
-                  label: '分享',
+                  label: AppStrings.share,
                   onTap: () =>
                       shareText(context, _result.report(appStore.decimals)),
                 ),
                 const SizedBox(width: 8),
                 _ActionChip(
                   icon: CupertinoIcons.folder_badge_plus,
-                  label: '存入项目',
+                  label: AppStrings.saveToProject,
                   onTap: () async {
                     await appStore.addToProject(_result);
                     if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('已存入“现场计算”项目')),
+                      const SnackBar(
+                        content: Text(AppStrings.savedToFieldCalculations),
+                      ),
                     );
                   },
                 ),
@@ -3134,7 +3310,7 @@ class _ResultPageState extends State<ResultPage> {
             ),
             const SizedBox(height: 25),
             const Text(
-              '展开图',
+              AppStrings.flatPattern,
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 11),
@@ -3159,7 +3335,11 @@ class _ResultPageState extends State<ResultPage> {
                             borderRadius: BorderRadius.circular(7),
                           ),
                           child: Text(
-                            ['仅轮廓', '轮廓＋尺寸', '轮廓＋点位'][i],
+                            [
+                              AppStrings.outline,
+                              AppStrings.dimensions,
+                              AppStrings.points,
+                            ][i],
                             style: TextStyle(
                               color: _mode == i ? Colors.white : _ink,
                               fontSize: 12,
@@ -3193,7 +3373,7 @@ class _ResultPageState extends State<ResultPage> {
                 ),
                 SizedBox(width: 6),
                 Text(
-                  '不作为 1:1 打印模板，请以实际放样为准。',
+                  AppStrings.notA11TemplateUseVerifiedLayoutDimensions,
                   style: TextStyle(
                     color: Color(0xFFE54545),
                     fontSize: 12,
@@ -3375,7 +3555,7 @@ class ProjectsPage extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    '项目',
+                    AppStrings.projects,
                     style: TextStyle(
                       color: _ink,
                       fontSize: 27,
@@ -3384,7 +3564,10 @@ class ProjectsPage extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '${appStore.savedComponents.length + appStore.savedEngineering.length} 个构件',
+                    AppStrings.components(
+                      appStore.savedComponents.length +
+                          appStore.savedEngineering.length,
+                    ),
                     style: const TextStyle(color: _muted, fontSize: 13),
                   ),
                 ],
@@ -3396,9 +3579,10 @@ class ProjectsPage extends StatelessWidget {
                       appStore.savedEngineering.isEmpty
                   ? _EmptyState(
                       asset: 'assets/components/square_round.png',
-                      title: '还没有项目构件',
-                      detail: '计算完成后点“存入项目”，结果会离线保存在这里。',
-                      action: '开始计算',
+                      title: AppStrings.noSavedComponents,
+                      detail: AppStrings
+                          .chooseSaveToProjectAfterCalculatingResultsStayOnThisDevice,
+                      action: AppStrings.startCalculating,
                       onTap: () => Navigator.of(context).push(
                         CupertinoPageRoute<void>(
                           builder: (_) => const CalculatorPage(),
@@ -3410,7 +3594,7 @@ class ProjectsPage extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(18, 8, 18, 90),
                       children: [
                         const Text(
-                          '现场计算',
+                          AppStrings.fieldCalculations,
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w700,
@@ -3418,7 +3602,7 @@ class ProjectsPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         const Text(
-                          '仅保存在本机',
+                          AppStrings.onThisDeviceOnly,
                           style: TextStyle(color: _muted, fontSize: 12),
                         ),
                         const SizedBox(height: 14),
@@ -3553,18 +3737,22 @@ class _ProjectFilter extends StatelessWidget {
       ),
       child: Row(
         children: [
-          for (final label in ['全部', '我创建的', '共享给我'])
+          for (final label in [
+            AppStrings.all,
+            AppStrings.myProjects,
+            AppStrings.sharedWithMe,
+          ])
             Expanded(
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: label == '全部' ? _navy : Colors.transparent,
+                  color: label == AppStrings.all ? _navy : Colors.transparent,
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: Text(
                   label,
                   style: TextStyle(
-                    color: label == '全部' ? Colors.white : _ink,
+                    color: label == AppStrings.all ? Colors.white : _ink,
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
@@ -3641,12 +3829,12 @@ class _ProjectItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '客户：$client',
+            AppStrings.client(client),
             style: const TextStyle(color: _muted, fontSize: 12),
           ),
           const SizedBox(height: 4),
           Text(
-            '更新：$date    构件：$count',
+            AppStrings.updatedComponents(date, count),
             style: const TextStyle(color: _muted, fontSize: 12),
           ),
           const SizedBox(height: 12),
@@ -3708,7 +3896,7 @@ class HistoryPage extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    '历史',
+                    AppStrings.history,
                     style: TextStyle(
                       color: _ink,
                       fontSize: 27,
@@ -3722,12 +3910,15 @@ class HistoryPage extends StatelessWidget {
                       onPressed: () => showCupertinoDialog<void>(
                         context: context,
                         builder: (dialogContext) => CupertinoAlertDialog(
-                          title: const Text('清空计算历史？'),
-                          content: const Text('此操作无法撤销，项目中已保存的构件不会被删除。'),
+                          title: const Text(AppStrings.clearCalculationHistory),
+                          content: const Text(
+                            AppStrings
+                                .thisCannotBeUndoneComponentsSavedToProjectsWillRemain,
+                          ),
                           actions: [
                             CupertinoDialogAction(
                               onPressed: () => Navigator.pop(dialogContext),
-                              child: const Text('取消'),
+                              child: const Text(AppStrings.cancel),
                             ),
                             CupertinoDialogAction(
                               isDestructiveAction: true,
@@ -3735,12 +3926,12 @@ class HistoryPage extends StatelessWidget {
                                 appStore.clearHistory();
                                 Navigator.pop(dialogContext);
                               },
-                              child: const Text('清空'),
+                              child: const Text(AppStrings.clear),
                             ),
                           ],
                         ),
                       ),
-                      child: const Text('清空'),
+                      child: const Text(AppStrings.clear),
                     ),
                 ],
               ),
@@ -3751,9 +3942,10 @@ class HistoryPage extends StatelessWidget {
                       appStore.engineeringHistory.isEmpty
                   ? _EmptyState(
                       asset: 'assets/components/conical_frustum.png',
-                      title: '暂无计算记录',
-                      detail: '每次有效计算都会自动保存在本机，最多保留 100 条。',
-                      action: '开始计算',
+                      title: AppStrings.noCalculationsYet,
+                      detail: AppStrings
+                          .completedCalculationsAreSavedOnThisDeviceUpTo100Entries,
+                      action: AppStrings.startCalculating,
                       onTap: () => Navigator.of(context).push(
                         CupertinoPageRoute<void>(
                           builder: (_) => const CalculatorPage(),
@@ -3870,10 +4062,10 @@ class HistoryPage extends StatelessWidget {
 
   String _relativeTime(DateTime value) {
     final difference = DateTime.now().difference(value);
-    if (difference.inMinutes < 1) return '刚刚';
-    if (difference.inHours < 1) return '${difference.inMinutes}分钟前';
-    if (difference.inDays < 1) return '${difference.inHours}小时前';
-    return '${value.month}月${value.day}日';
+    if (difference.inMinutes < 1) return AppStrings.justNow;
+    if (difference.inHours < 1) return AppStrings.minAgo(difference.inMinutes);
+    if (difference.inDays < 1) return AppStrings.hoursAgo(difference.inHours);
+    return AppStrings.label(value.month, value.day);
   }
 }
 
@@ -3939,7 +4131,7 @@ class SettingsPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(18, 16, 18, 90),
           children: [
             const Text(
-              '设置',
+              AppStrings.settings,
               style: TextStyle(
                 color: _ink,
                 fontSize: 27,
@@ -3947,23 +4139,28 @@ class SettingsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 23),
-            const _SettingsLabel('计算'),
+            const _SettingsLabel(AppStrings.calculate),
             _SettingsTile(
-              title: '默认长度单位',
-              value: '毫米（mm）',
+              title: AppStrings.defaultLengthUnit,
+              value: AppStrings.millimetresMm,
               onTap: () => _showMessage(
                 context,
-                '长度单位',
-                '计算页支持 mm、cm、m 即时切换，内部始终以毫米保留完整精度。',
+                AppStrings.lengthUnits,
+                AppStrings
+                    .switchBetweenMmCmAndMInternalCalculationsRetainFullPrecisionInMillimet,
               ),
             ),
             _SettingsTile(
-              title: '结果小数位',
-              value: ['整数', '0.1', '0.01'][appStore.decimals],
+              title: AppStrings.decimalPlaces,
+              value: [
+                AppStrings.wholeNumbers,
+                '0.1',
+                '0.01',
+              ][appStore.decimals],
               onTap: () => showCupertinoModalPopup<void>(
                 context: context,
                 builder: (sheetContext) => CupertinoActionSheet(
-                  title: const Text('结果小数位'),
+                  title: const Text(AppStrings.decimalPlaces),
                   actions: [
                     for (int i = 0; i < 3; i++)
                       CupertinoActionSheetAction(
@@ -3971,40 +4168,45 @@ class SettingsPage extends StatelessWidget {
                           appStore.setDecimals(i);
                           Navigator.pop(sheetContext);
                         },
-                        child: Text(['整数', '0.1', '0.01'][i]),
+                        child: Text(
+                          [AppStrings.wholeNumbers, '0.1', '0.01'][i],
+                        ),
                       ),
                   ],
                   cancelButton: CupertinoActionSheetAction(
                     onPressed: () => Navigator.pop(sheetContext),
-                    child: const Text('取消'),
+                    child: const Text(AppStrings.cancel),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 22),
-            const _SettingsLabel('数据与隐私'),
+            const _SettingsLabel(AppStrings.dataPrivacy),
             _SettingsTile(
-              title: '本机数据',
-              value:
-                  '${appStore.history.length + appStore.engineeringHistory.length} 条历史',
+              title: AppStrings.localData,
+              value: AppStrings.historyEntries(
+                appStore.history.length + appStore.engineeringHistory.length,
+              ),
               onTap: () => _showMessage(
                 context,
-                '仅保存在本机',
-                '本 App 无账号、无广告、无分析 SDK。参数、历史和项目不会上传到服务器。删除 App 会同时删除未导出的本机数据。',
+                AppStrings.onThisDeviceOnly,
+                AppStrings
+                    .noAccountsAdsOrAnalyticsSDKsInputsHistoryAndProjectsAreNotUploadedUnin,
               ),
             ),
             _SettingsTile(
-              title: '分享数据说明',
+              title: AppStrings.sharing,
               onTap: () => _showMessage(
                 context,
-                '用户主动分享',
-                '只有在你点击“分享”后，结果文本才会交给 iOS 系统分享面板。App 不会在后台发送数据。',
+                AppStrings.onlyWhenYouChoose,
+                AppStrings
+                    .resultTextIsPassedToTheSystemShareSheetOnlyWhenYouChooseShareTheAppDoe,
               ),
             ),
             const SizedBox(height: 22),
-            const _SettingsLabel('关于'),
+            const _SettingsLabel(AppStrings.about),
             _SettingsTile(
-              title: '公式与适用范围',
+              title: AppStrings.formulasAndScope,
               onTap: () => showModalBottomSheet<void>(
                 context: context,
                 showDragHandle: true,
@@ -4012,17 +4214,18 @@ class SettingsPage extends StatelessWidget {
               ),
             ),
             _SettingsTile(
-              title: '使用与复核提示',
+              title: AppStrings.reviewChecklist,
               onTap: () => _showMessage(
                 context,
-                '加工前必须复核',
-                '结果基于用户输入和理想几何模型，用于辅助计算与放样。实际加工前请结合图纸、材料、板厚、咬口、焊缝、工艺余量和现场尺寸复核，必要时先制作试样。',
+                AppStrings.verifyBeforeFabrication,
+                AppStrings
+                    .resultsUseYourInputsAndIdealGeometryCheckDrawingsMaterialsThicknessSea,
               ),
             ),
             const Padding(
               padding: EdgeInsets.only(top: 28),
               child: Text(
-                '钣金展开 1.0.0 · 完全离线',
+                AppStrings.sheetMetalLayout100Offline,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: _muted, fontSize: 12),
               ),
@@ -4042,7 +4245,7 @@ class SettingsPage extends StatelessWidget {
         actions: [
           CupertinoDialogAction(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('知道了'),
+            child: const Text(AppStrings.ok),
           ),
         ],
       ),

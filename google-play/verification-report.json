@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-12T09:15:42.087Z",
-  "mode": "ios-reference-draft",
+  "checkedAt": "2026-10-12T10:44:46.491Z",
+  "mode": "android",
   "listingLengths": {
     "title": 29,
     "shortDescription": 72,
@@ -14,8 +14,7 @@
       "channels": 4,
       "alpha": true,
       "bytes": 436006,
-      "nonBlank": true,
-      "sha256": "70b9605501d05a43fc3e236b267182b152c45ee3887eb7e0787377a90096ed34"
+      "nonBlank": true
     },
     {
       "file": "graphics/feature-graphic-1024x500.png",
@@ -24,74 +23,69 @@
       "channels": 3,
       "alpha": false,
       "bytes": 221861,
-      "nonBlank": true,
-      "sha256": "e055d487cb46a301f7f977deb2e3bdec94f9e02b495871d0ee4cad9ebbf1f066"
+      "nonBlank": true
     },
     {
-      "file": "screenshots-draft/01-flat-pattern-1080x1920.png",
+      "file": "screenshots-final/01-flat-pattern-1080x1920.png",
       "width": 1080,
       "height": 1920,
       "channels": 3,
       "alpha": false,
-      "bytes": 199915,
-      "nonBlank": true,
-      "sha256": "bdd428b4881da74e5e1cee584df0e1cd35324bfe01038547a99ec616c35230dc"
+      "bytes": 177108,
+      "nonBlank": true
     },
     {
-      "file": "screenshots-draft/02-shape-library-1080x1920.png",
+      "file": "screenshots-final/02-shape-library-1080x1920.png",
       "width": 1080,
       "height": 1920,
       "channels": 3,
       "alpha": false,
-      "bytes": 533091,
-      "nonBlank": true,
-      "sha256": "b6d7856a984e0f1a0c83a56c62a6af27643ffb04a0a6a76a4d8fe3392e6ae422"
+      "bytes": 604003,
+      "nonBlank": true
     },
     {
-      "file": "screenshots-draft/03-visual-input-1080x1920.png",
+      "file": "screenshots-final/03-visual-input-1080x1920.png",
       "width": 1080,
       "height": 1920,
       "channels": 3,
       "alpha": false,
-      "bytes": 406626,
-      "nonBlank": true,
-      "sha256": "8ce12591e8aeafbf935eb31ee3b86182c5890a0e3e56ee4e89b8b5f7642e4f94"
+      "bytes": 402421,
+      "nonBlank": true
     },
     {
-      "file": "screenshots-draft/04-layout-points-1080x1920.png",
+      "file": "screenshots-final/04-layout-points-1080x1920.png",
       "width": 1080,
       "height": 1920,
       "channels": 3,
       "alpha": false,
-      "bytes": 202212,
-      "nonBlank": true,
-      "sha256": "40d9556827136e43a303425d8b2687a19a90b1c3c64498112c119c6d5b9c03b2"
+      "bytes": 168940,
+      "nonBlank": true
     },
     {
-      "file": "screenshots-draft/05-projects-1080x1920.png",
+      "file": "screenshots-final/05-projects-1080x1920.png",
       "width": 1080,
       "height": 1920,
       "channels": 3,
       "alpha": false,
-      "bytes": 173846,
-      "nonBlank": true,
-      "sha256": "a49f7c6baebadddfeda15a59e86b266004efa038b78c547184285eaea1822b39"
+      "bytes": 179206,
+      "nonBlank": true
     },
     {
-      "file": "screenshots-draft/06-history-1080x1920.png",
+      "file": "screenshots-final/06-history-1080x1920.png",
       "width": 1080,
       "height": 1920,
       "channels": 3,
       "alpha": false,
-      "bytes": 185482,
-      "nonBlank": true,
-      "sha256": "5ded36f2a783aaa01442fe128d34390214ff7e7e0e378af374855dcf758f17bf"
+      "bytes": 160712,
+      "nonBlank": true
     }
   ],
   "remaining": [
-    "当前应用界面为中文；先完成英文界面后再采集最终截图。",
-    "没有 DXF、PDF、图片导出及批量文件导出实现，文案只宣传结果文本分享。",
-    "图纸不是 1:1 下料模板；未宣传自动加咬口、焊缝、锯缝或回弹补偿。"
+    "展开图用于辅助计算，不是 1:1 切割模板。",
+    "分享为结果文本，没有 DXF、CAD、PDF 或结果图片导出。",
+    "提交前发布 Android 英文隐私页，并核对客服邮箱和最终签名包。",
+    "在另一台电脑配置本地上传密钥，构建并验证 release AAB。"
   ],
-  "finalExportGuard": "Verified refusal when Android capture provenance is absent."
+  "visualReview": "passed; details in quality-review.json",
+  "sourceAndAndroidBuildReview": "source-audit.json"
 }

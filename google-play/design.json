@@ -5,5 +5,9 @@
   "accent": "#0B68D1",
   "image": "source/feature-visual.png",
   "tagline": "From dimensions\nto flat patterns.",
-  "icon": "source/app-icon.png"
+  "icon": "source/app-icon.png",
+  "applicationId": "com.cc.banjinzhankai",
+  "captureChannel": "banjin_zhankai/screenshot_config",
+  "languageDefine": "APP_LANGUAGE=en",
+  "style": "技术制图：蓝白配色、淡网格、尺寸图作为画面中心"
 }

@@ -1,3 +1,4 @@
+import 'package:banjin_zhankai/app_language.dart';
 import 'dart:math' as math;
 
 import 'package:banjin_zhankai/main.dart';
@@ -80,9 +81,9 @@ void main() {
   testWidgets('shows the expansion workspace', (tester) async {
     await tester.pumpWidget(const SheetMetalApp());
 
-    expect(find.text('最近使用'), findsOneWidget);
-    expect(find.text('常用分类'), findsOneWidget);
-    expect(find.text('展开'), findsOneWidget);
+    expect(find.text(AppStrings.recent), findsOneWidget);
+    expect(find.text(AppStrings.categories), findsOneWidget);
+    expect(find.text(AppStrings.layouts), findsOneWidget);
     expect(find.byIcon(CupertinoIcons.viewfinder), findsNothing);
   });
 
@@ -91,24 +92,24 @@ void main() {
   ) async {
     await tester.pumpWidget(const SheetMetalApp());
 
-    await tester.tap(find.text('搜索构件、俗称'));
+    await tester.tap(find.text(AppStrings.searchShapes));
     await tester.pumpAndSettle();
     expect(find.byType(EditableText), findsOneWidget);
-    expect(find.text('参数输入 · 展开数据 · 点位图'), findsWidgets);
+    expect(find.text(AppStrings.dimensionsDevelopmentPoints), findsWidgets);
     await tester.tap(find.byIcon(CupertinoIcons.chevron_left).first);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('全部').first);
+    await tester.tap(find.text(AppStrings.all).first);
     await tester.pumpAndSettle();
-    expect(find.text('最近使用'), findsOneWidget);
-    expect(find.text('同心圆锥台'), findsOneWidget);
+    expect(find.text(AppStrings.recent), findsOneWidget);
+    expect(find.text(AppStrings.conicalFrustum), findsOneWidget);
     await tester.tap(find.byIcon(CupertinoIcons.chevron_left).first);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('全部').last);
+    await tester.tap(find.text(AppStrings.all).last);
     await tester.pumpAndSettle();
-    expect(find.text('收藏'), findsOneWidget);
-    expect(find.text('偏心大小头'), findsOneWidget);
+    expect(find.text(AppStrings.favorites), findsOneWidget);
+    expect(find.text(AppStrings.eccentricReducer), findsOneWidget);
   });
 
   testWidgets('share uses a valid iOS popover origin', (tester) async {
@@ -142,41 +143,44 @@ void main() {
   ) async {
     await tester.pumpWidget(const SheetMetalApp());
 
-    await tester.tap(find.text('同心圆锥台'));
+    await tester.tap(find.text(AppStrings.conicalFrustum));
     await tester.pumpAndSettle();
-    expect(find.text('大端直径 A'), findsOneWidget);
+    expect(find.text(AppStrings.largeDiameterA), findsOneWidget);
 
-    await tester.tap(find.text('计算'));
+    await tester.tap(find.text(AppStrings.calculate));
     await tester.pumpAndSettle();
-    expect(find.text('母线实长 L'), findsOneWidget);
-    expect(find.text('展开图'), findsOneWidget);
+    expect(find.text(AppStrings.slantLengthL), findsOneWidget);
+    expect(find.text(AppStrings.flatPattern), findsOneWidget);
   });
 
   testWidgets('rejects an impossible diameter combination', (tester) async {
     await tester.pumpWidget(const SheetMetalApp());
 
-    await tester.tap(find.text('同心圆锥台'));
+    await tester.tap(find.text(AppStrings.conicalFrustum));
     await tester.pumpAndSettle();
     final fields = find.byType(EditableText);
     await tester.enterText(fields.at(0), '500');
     await tester.enterText(fields.at(1), '600');
     await tester.testTextInput.receiveAction(TextInputAction.done);
-    final calculate = find.text('计算');
+    final calculate = find.text(AppStrings.calculate);
     await tester.ensureVisible(calculate);
     await tester.tap(calculate);
     await tester.pumpAndSettle();
     await tester.drag(find.byType(ListView), const Offset(0, -500));
     await tester.pumpAndSettle();
 
-    expect(find.text('大端直径必须大于小端直径'), findsOneWidget);
+    expect(
+      find.text(AppStrings.largeDiameterMustExceedSmallDiameter),
+      findsOneWidget,
+    );
   });
 
   for (final entry in <(TemplateType, String)>[
-    (TemplateType.bend, '折弯余量 BA'),
-    (TemplateType.eccentricCone, '最短素线'),
-    (TemplateType.elbow, '圆周展开宽度'),
-    (TemplateType.tee, '支管展开宽度'),
-    (TemplateType.squareRound, '方口周长'),
+    (TemplateType.bend, AppStrings.bendAllowanceBA),
+    (TemplateType.eccentricCone, AppStrings.shortestTrueLength),
+    (TemplateType.elbow, AppStrings.developedWidth),
+    (TemplateType.tee, AppStrings.branchDevelopedWidth),
+    (TemplateType.squareRound, AppStrings.rectangularPerimeter),
   ]) {
     testWidgets('${entry.$1.name} completes its calculation flow', (
       tester,
@@ -185,11 +189,11 @@ void main() {
         MaterialApp(home: GenericCalculatorPage(type: entry.$1)),
       );
 
-      await tester.tap(find.text('计算'));
+      await tester.tap(find.text(AppStrings.calculate));
       await tester.pumpAndSettle();
 
       expect(find.text(entry.$2), findsOneWidget);
-      expect(find.text('展开与点位'), findsOneWidget);
+      expect(find.text(AppStrings.developmentPoints), findsOneWidget);
     });
   }
 }

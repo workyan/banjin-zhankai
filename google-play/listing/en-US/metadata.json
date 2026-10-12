@@ -13,8 +13,12 @@
   "suggestedInitialPaidPriceUSD": "9.99",
   "pricingStatus": "Suggestion only; not applied in Play Console.",
   "codeReviewIssues": [
-    "当前应用界面为中文；先完成英文界面后再采集最终截图。",
-    "没有 DXF、PDF、图片导出及批量文件导出实现，文案只宣传结果文本分享。",
-    "图纸不是 1:1 下料模板；未宣传自动加咬口、焊缝、锯缝或回弹补偿。"
-  ]
+    "展开图用于辅助计算，不是 1:1 切割模板。",
+    "分享为结果文本，没有 DXF、CAD、PDF 或结果图片导出。",
+    "提交前发布 Android 英文隐私页，并核对客服邮箱和最终签名包。",
+    "在另一台电脑配置本地上传密钥，构建并验证 release AAB。"
+  ],
+  "applicationId": "com.cc.banjinzhankai",
+  "androidLanguageBuildDefine": "APP_LANGUAGE=en",
+  "screenshotsStatus": "Real English Android captures; marketing PNGs in screenshots-final."
 }

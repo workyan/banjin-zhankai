@@ -5,7 +5,7 @@
     "width": 1080,
     "height": 1920
   },
-  "status": "draft-using-real-ios-references",
+  "status": "real-english-android-captures",
   "slides": [
     {
       "id": "01-flat-pattern",
@@ -13,7 +13,7 @@
       "headline": "Check the\nflat pattern",
       "androidFile": "01-flat-pattern.png",
       "altText": "Sheet Metal Layout: check the flat pattern.",
-      "sourceStatus": "Actual iOS reference. Final Android capture required."
+      "sourceStatus": "Actual Android emulator capture of the app with deterministic sample data."
     },
     {
       "id": "02-shape-library",
@@ -21,7 +21,7 @@
       "headline": "Find the shape\nyou need",
       "androidFile": "02-shape-library.png",
       "altText": "Sheet Metal Layout: find the shape you need.",
-      "sourceStatus": "Actual iOS reference. Final Android capture required."
+      "sourceStatus": "Actual Android emulator capture of the app with deterministic sample data."
     },
     {
       "id": "03-visual-input",
@@ -29,7 +29,7 @@
       "headline": "Enter dimensions\nwith context",
       "androidFile": "03-visual-input.png",
       "altText": "Sheet Metal Layout: enter dimensions with context.",
-      "sourceStatus": "Actual iOS reference. Final Android capture required."
+      "sourceStatus": "Actual Android emulator capture of the app with deterministic sample data."
     },
     {
       "id": "04-layout-points",
@@ -37,7 +37,7 @@
       "headline": "Review each\nlayout point",
       "androidFile": "04-layout-points.png",
       "altText": "Sheet Metal Layout: review each layout point.",
-      "sourceStatus": "Actual iOS reference. Final Android capture required."
+      "sourceStatus": "Actual Android emulator capture of the app with deterministic sample data."
     },
     {
       "id": "05-projects",
@@ -45,7 +45,7 @@
       "headline": "Keep layouts\ntogether",
       "androidFile": "05-projects.png",
       "altText": "Sheet Metal Layout: keep layouts together.",
-      "sourceStatus": "Actual iOS reference. Final Android capture required."
+      "sourceStatus": "Actual Android emulator capture of the app with deterministic sample data."
     },
     {
       "id": "06-history",
@@ -53,7 +53,7 @@
       "headline": "Return to recent\ncalculations",
       "androidFile": "06-history.png",
       "altText": "Sheet Metal Layout: return to recent calculations.",
-      "sourceStatus": "Actual iOS reference. Final Android capture required."
+      "sourceStatus": "Actual Android emulator capture of the app with deterministic sample data."
     }
   ]
 }

@@ -1,14 +1,55 @@
 {
-  "reviewedCommit": "28e9e7835108c399c84923c01e7aa7226bb0de03",
-  "scope": "Existing Flutter source, not an Android build verification.",
+  "reviewedAt": "2026-10-12T10:53:35.866606+00:00",
+  "baseCommitBeforeChanges": "5d56ff255b82d92ed3dfe5a03202a1c0683e1c06",
+  "scope": "Current Flutter and Android source, debug APK, real simulator scenes, marketing assets. Signed release AAB and physical-device validation remain with the submitting developer.",
   "sourceFiles": {
-    "lib/main.dart": "9f50d5ac27991bc13a01e7b9f3dc1ee28949a825b37e616d7376a275bda2e642"
+    "android/app/build.gradle.kts": "5026bb990bb331c63e4981255cee74a55a1a8fed12a381252d0736fd4e92e80a",
+    "android/app/src/debug/AndroidManifest.xml": "30b0832ed8b92dfbd6ae2abfa939ccf26333d37600056b1572bd4a397a18a74b",
+    "android/app/src/main/AndroidManifest.xml": "98c3b62a60d25b6d6d6a19155b1ea22c1e30c0dfd1e653c342400c0073cd1341",
+    "android/app/src/main/kotlin/com/cc/banjinzhankai/MainActivity.kt": "5a7257cb7d505b3e479b614cf34bfdc8c5874233795d9d974a6f13e72431c0af",
+    "android/app/src/main/res/drawable/launch_background.xml": "94433756fe10005ddd6fc55cc5c0b1e9f3c10b66a08ceac795ece6713d34e28a",
+    "android/app/src/main/res/drawable-v21/launch_background.xml": "7ca6d5cec2169c5a98661a119db23a6f3399c8fef2256ff04f3a642831282478",
+    "android/app/src/main/res/values/styles.xml": "937d7c82f539c72eb94fd3a3773f29b3d3fef1997213c92cb632298cedf4bda9",
+    "android/app/src/main/res/values-night/styles.xml": "8c5bad5152f217e837519f9c15211d19f39bd45f5f67faf6dd81cb4b299e518f",
+    "android/app/src/profile/AndroidManifest.xml": "30b0832ed8b92dfbd6ae2abfa939ccf26333d37600056b1572bd4a397a18a74b",
+    "android/build.gradle.kts": "6a26dba2cb8dfba1e74f540b0d17a89d96c1301d3c3bfda14348bed257fddcba",
+    "android/gradle/wrapper/gradle-wrapper.properties": "3221993eac1057198d652b7437105e2953ca4850d415eb0eb2b9625874fd059e",
+    "android/gradle.properties": "0f82b18017fba6bb5ce3aa4b2d1a00c9382fc8aae7b1d9326e44b18abd66d80b",
+    "android/settings.gradle.kts": "b76d554153a63772dddbe2ee91abdf582f5f871af40698b80a2ef7b70903d96f",
+    "lib/app_language.dart": "68d71fdf44dd14e17df37623965615f9ae41607f295d71f0a218e52f4f934a3d",
+    "lib/main.dart": "b264fbfa4e55cfb02aad575ecd0d89f7f67e8390bf781b742119046ad3bb5746",
+    "pubspec.lock": "2044ea1949b4f0ea4cbe22fe6eb3e55a1c0c2bd99dff2f7b1e52b2ccffeb4d5a",
+    "pubspec.yaml": "5c03ba21a7217e079934e08c0205a2a0766cae7152b7173fb42928a68f9095cf",
+    "test/widget_test.dart": "68ee687321e7697ef78c80adde00ba3e9dec8ee7df5da5f9e57f1a9a4bd7126e"
   },
+  "flutterVersion": "3.44.8",
+  "dartVersion": "3.12.2",
+  "analyze": "No issues found",
+  "tests": [
+    {
+      "locale": "en",
+      "passed": 12,
+      "result": "passed",
+      "testOutputSha256": "8eb08371f2752bc6dba4fa0545c40564920869b0490781a9f58147c5ef089046"
+    },
+    {
+      "locale": "zh",
+      "passed": 12,
+      "result": "passed",
+      "testOutputSha256": "6e7d981cfdc3e16074b3a0009982d52b93a93d8b54a77a0240b8ff6c3be732c6"
+    }
+  ],
+  "androidDebugBuild": "passed",
+  "applicationId": "com.cc.banjinzhankai",
+  "minSdk": 24,
+  "targetSdk": 36,
+  "apkSha256": "655f0da9529de8e7bf8c7d716e9b758ca2af372c8226274fecdfcd0437680259",
   "existingAdsOrAnalyticsSdkFound": false,
-  "screenshotsSource": "Real iOS raster references from app-store-shot-factory, without translated UI; draft only.",
-  "releaseIssues": [
-    "当前应用界面为中文；先完成英文界面后再采集最终截图。",
-    "没有 DXF、PDF、图片导出及批量文件导出实现，文案只宣传结果文本分享。",
-    "图纸不是 1:1 下料模板；未宣传自动加咬口、焊缝、锯缝或回弹补偿。"
+  "screenshotsSource": "Real English Android emulator PNGs; native debug-only scene bridge; real app widgets with deterministic sample data.",
+  "functionalBoundariesAndReleaseSteps": [
+    "展开图用于辅助计算，不是 1:1 切割模板。",
+    "分享为结果文本，没有 DXF、CAD、PDF 或结果图片导出。",
+    "提交前发布 Android 英文隐私页，并核对客服邮箱和最终签名包。",
+    "在另一台电脑配置本地上传密钥，构建并验证 release AAB。"
   ]
 }

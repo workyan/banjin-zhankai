@@ -39,6 +39,17 @@
 
 不做账号、云端计算、社区、行情、接单平台和自动续费。计算结果用于辅助放样和下料，实际加工前必须结合图纸、材料、工艺和现场尺寸复核。
 
-## Google Play handoff
+## Google Play / Android
 
-See [google-play/README.md](google-play/README.md) for English listing text, store graphics, screenshot drafts, Android capture instructions and release checks. Open [google-play/preview.html](google-play/preview.html) locally to review the materials.
+Android 项目已加入，applicationId 为 `com.cc.banjinzhankai`。英文 Google Play 素材包含六张真实 Android 截图、图标、横幅和商店文案。
+
+- [上架素材与预览](google-play/README.md)
+- [另一台电脑的构建、测试和本地签名步骤](google-play/android-release.md)
+- [提交前检查](google-play/release-checklist.md)
+
+```bash
+flutter pub get
+flutter build apk --debug --target-platform android-arm64 --dart-define=APP_LANGUAGE=en
+```
+
+两个计算器的中文构建保持默认；海外 Android 构建需带 `--dart-define=APP_LANGUAGE=en`。

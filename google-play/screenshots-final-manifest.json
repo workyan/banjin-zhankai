@@ -1,0 +1,86 @@
+[
+  {
+    "file": "screenshots-final/01-flat-pattern-1080x1920.png",
+    "source": "source/android/01-flat-pattern.png",
+    "sourcePlatform": "android",
+    "crop": {
+      "top": 64,
+      "bottom": 96
+    },
+    "locale": "en-US",
+    "headline": "Check the\nflat pattern",
+    "width": 1080,
+    "height": 1920,
+    "status": "visually-reviewed-real-android-marketing-asset"
+  },
+  {
+    "file": "screenshots-final/02-shape-library-1080x1920.png",
+    "source": "source/android/02-shape-library.png",
+    "sourcePlatform": "android",
+    "crop": {
+      "top": 64,
+      "bottom": 96
+    },
+    "locale": "en-US",
+    "headline": "Find the shape\nyou need",
+    "width": 1080,
+    "height": 1920,
+    "status": "visually-reviewed-real-android-marketing-asset"
+  },
+  {
+    "file": "screenshots-final/03-visual-input-1080x1920.png",
+    "source": "source/android/03-visual-input.png",
+    "sourcePlatform": "android",
+    "crop": {
+      "top": 64,
+      "bottom": 96
+    },
+    "locale": "en-US",
+    "headline": "Enter dimensions\nwith context",
+    "width": 1080,
+    "height": 1920,
+    "status": "visually-reviewed-real-android-marketing-asset"
+  },
+  {
+    "file": "screenshots-final/04-layout-points-1080x1920.png",
+    "source": "source/android/04-layout-points.png",
+    "sourcePlatform": "android",
+    "crop": {
+      "top": 64,
+      "bottom": 96
+    },
+    "locale": "en-US",
+    "headline": "Review each\nlayout point",
+    "width": 1080,
+    "height": 1920,
+    "status": "visually-reviewed-real-android-marketing-asset"
+  },
+  {
+    "file": "screenshots-final/05-projects-1080x1920.png",
+    "source": "source/android/05-projects.png",
+    "sourcePlatform": "android",
+    "crop": {
+      "top": 64,
+      "bottom": 96
+    },
+    "locale": "en-US",
+    "headline": "Keep layouts\ntogether",
+    "width": 1080,
+    "height": 1920,
+    "status": "visually-reviewed-real-android-marketing-asset"
+  },
+  {
+    "file": "screenshots-final/06-history-1080x1920.png",
+    "source": "source/android/06-history.png",
+    "sourcePlatform": "android",
+    "crop": {
+      "top": 64,
+      "bottom": 96
+    },
+    "locale": "en-US",
+    "headline": "Return to recent\ncalculations",
+    "width": 1080,
+    "height": 1920,
+    "status": "visually-reviewed-real-android-marketing-asset"
+  }
+]
