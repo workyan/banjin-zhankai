@@ -1,0 +1,20 @@
+{
+  "locale": "en-US",
+  "title": "Sheet Metal Layout Calculator",
+  "shortDescription": "Calculate cones, bends and transitions with clear flat-pattern diagrams.",
+  "fullDescription": "Sheet Metal Layout Calculator helps fabricators, sheet metal workers and ductwork installers check development dimensions on site.\n\nCHOOSE A SHAPE\nWork with concentric and eccentric cone frustums, single bends, segmented elbows, intersecting round pipes and square-to-round transitions.\n\nENTER DIMENSIONS WITH CONTEXT\nUse illustrated parameter positions to enter diameters, heights, thickness, bend angles and offsets. Input checks flag invalid dimensions before calculation. Length inputs use millimetres, centimetres or metres.\n\nREVIEW THE RESULTS\nFor supported shapes, inspect development dimensions, true lengths, numbered points and clear diagrams. Cone calculations show slant length, sector radii, sector angle and theoretical area. Single-bend calculations include bend allowance and bend deduction using a K factor.\n\nSAVE AND REUSE\nKeep calculation history on your device, save supported results to a local project and return to recent inputs. Copy or share result text through the system share sheet.\n\nWORK OFFLINE\nCore calculations do not require an account or network connection. No ads or subscriptions are included in the current app.\n\nThis app provides ideal geometric calculations for layout assistance. Results do not automatically include seams, weld gaps, cutting kerf, springback or process allowances. Diagrams are not 1:1 cutting templates. Check the drawing, material, thickness and fabrication process before cutting.",
+  "category": "Tools",
+  "appType": "App",
+  "supportEmail": "1535883467@qq.com",
+  "supportEmailSource": "Existing public Sheet Metal app support page; confirm before publishing.",
+  "existingPrivacyUrl": "https://workyan.github.io/docs/banjin-zhankai/privacy.html",
+  "existingSupportUrl": "https://workyan.github.io/docs/banjin-zhankai/support.html",
+  "privacyUrlStatus": "Existing public iOS policy; update for Android before submission.",
+  "suggestedInitialPaidPriceUSD": "9.99",
+  "pricingStatus": "Suggestion only; not applied in Play Console.",
+  "codeReviewIssues": [
+    "当前应用界面为中文；先完成英文界面后再采集最终截图。",
+    "没有 DXF、PDF、图片导出及批量文件导出实现，文案只宣传结果文本分享。",
+    "图纸不是 1:1 下料模板；未宣传自动加咬口、焊缝、锯缝或回弹补偿。"
+  ]
+}

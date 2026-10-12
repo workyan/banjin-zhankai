@@ -1,0 +1,9 @@
+{
+  "brand": "Sheet Metal Layout",
+  "bg": "#EDF2F8",
+  "dark": "#102D4B",
+  "accent": "#0B68D1",
+  "image": "source/feature-visual.png",
+  "tagline": "From dimensions\nto flat patterns.",
+  "icon": "source/app-icon.png"
+}

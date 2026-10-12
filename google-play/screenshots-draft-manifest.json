@@ -1,0 +1,62 @@
+[
+  {
+    "file": "screenshots-draft/01-flat-pattern-1080x1920.png",
+    "source": "source/ios-reference/01-flat-pattern.png",
+    "sourcePlatform": "ios-reference",
+    "locale": "zh-CN",
+    "headline": "Check the\nflat pattern",
+    "width": 1080,
+    "height": 1920,
+    "status": "draft-not-for-upload"
+  },
+  {
+    "file": "screenshots-draft/02-shape-library-1080x1920.png",
+    "source": "source/ios-reference/02-shape-library.png",
+    "sourcePlatform": "ios-reference",
+    "locale": "zh-CN",
+    "headline": "Find the shape\nyou need",
+    "width": 1080,
+    "height": 1920,
+    "status": "draft-not-for-upload"
+  },
+  {
+    "file": "screenshots-draft/03-visual-input-1080x1920.png",
+    "source": "source/ios-reference/03-visual-input.png",
+    "sourcePlatform": "ios-reference",
+    "locale": "zh-CN",
+    "headline": "Enter dimensions\nwith context",
+    "width": 1080,
+    "height": 1920,
+    "status": "draft-not-for-upload"
+  },
+  {
+    "file": "screenshots-draft/04-layout-points-1080x1920.png",
+    "source": "source/ios-reference/04-layout-points.png",
+    "sourcePlatform": "ios-reference",
+    "locale": "zh-CN",
+    "headline": "Review each\nlayout point",
+    "width": 1080,
+    "height": 1920,
+    "status": "draft-not-for-upload"
+  },
+  {
+    "file": "screenshots-draft/05-projects-1080x1920.png",
+    "source": "source/ios-reference/05-projects.png",
+    "sourcePlatform": "ios-reference",
+    "locale": "zh-CN",
+    "headline": "Keep layouts\ntogether",
+    "width": 1080,
+    "height": 1920,
+    "status": "draft-not-for-upload"
+  },
+  {
+    "file": "screenshots-draft/06-history-1080x1920.png",
+    "source": "source/ios-reference/06-history.png",
+    "sourcePlatform": "ios-reference",
+    "locale": "zh-CN",
+    "headline": "Return to recent\ncalculations",
+    "width": 1080,
+    "height": 1920,
+    "status": "draft-not-for-upload"
+  }
+]

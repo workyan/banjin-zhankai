@@ -1,0 +1,59 @@
+{
+  "app": "Sheet Metal Layout",
+  "locale": "en-US",
+  "output": {
+    "width": 1080,
+    "height": 1920
+  },
+  "status": "draft-using-real-ios-references",
+  "slides": [
+    {
+      "id": "01-flat-pattern",
+      "scene": "result-dimensions",
+      "headline": "Check the\nflat pattern",
+      "androidFile": "01-flat-pattern.png",
+      "altText": "Sheet Metal Layout: check the flat pattern.",
+      "sourceStatus": "Actual iOS reference. Final Android capture required."
+    },
+    {
+      "id": "02-shape-library",
+      "scene": "home-overview",
+      "headline": "Find the shape\nyou need",
+      "androidFile": "02-shape-library.png",
+      "altText": "Sheet Metal Layout: find the shape you need.",
+      "sourceStatus": "Actual iOS reference. Final Android capture required."
+    },
+    {
+      "id": "03-visual-input",
+      "scene": "calculator-input",
+      "headline": "Enter dimensions\nwith context",
+      "androidFile": "03-visual-input.png",
+      "altText": "Sheet Metal Layout: enter dimensions with context.",
+      "sourceStatus": "Actual iOS reference. Final Android capture required."
+    },
+    {
+      "id": "04-layout-points",
+      "scene": "result-points",
+      "headline": "Review each\nlayout point",
+      "androidFile": "04-layout-points.png",
+      "altText": "Sheet Metal Layout: review each layout point.",
+      "sourceStatus": "Actual iOS reference. Final Android capture required."
+    },
+    {
+      "id": "05-projects",
+      "scene": "projects",
+      "headline": "Keep layouts\ntogether",
+      "androidFile": "05-projects.png",
+      "altText": "Sheet Metal Layout: keep layouts together.",
+      "sourceStatus": "Actual iOS reference. Final Android capture required."
+    },
+    {
+      "id": "06-history",
+      "scene": "history",
+      "headline": "Return to recent\ncalculations",
+      "androidFile": "06-history.png",
+      "altText": "Sheet Metal Layout: return to recent calculations.",
+      "sourceStatus": "Actual iOS reference. Final Android capture required."
+    }
+  ]
+}

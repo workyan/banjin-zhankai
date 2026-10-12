@@ -38,3 +38,7 @@
 ```
 
 不做账号、云端计算、社区、行情、接单平台和自动续费。计算结果用于辅助放样和下料，实际加工前必须结合图纸、材料、工艺和现场尺寸复核。
+
+## Google Play handoff
+
+See [google-play/README.md](google-play/README.md) for English listing text, store graphics, screenshot drafts, Android capture instructions and release checks. Open [google-play/preview.html](google-play/preview.html) locally to review the materials.

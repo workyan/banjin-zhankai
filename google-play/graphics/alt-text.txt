@@ -1,0 +1,2 @@
+Icon: Sheet Metal Layout app icon.
+Feature graphic: From dimensions to flat patterns.

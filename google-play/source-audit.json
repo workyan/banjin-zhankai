@@ -1,0 +1,14 @@
+{
+  "reviewedCommit": "28e9e7835108c399c84923c01e7aa7226bb0de03",
+  "scope": "Existing Flutter source, not an Android build verification.",
+  "sourceFiles": {
+    "lib/main.dart": "9f50d5ac27991bc13a01e7b9f3dc1ee28949a825b37e616d7376a275bda2e642"
+  },
+  "existingAdsOrAnalyticsSdkFound": false,
+  "screenshotsSource": "Real iOS raster references from app-store-shot-factory, without translated UI; draft only.",
+  "releaseIssues": [
+    "当前应用界面为中文；先完成英文界面后再采集最终截图。",
+    "没有 DXF、PDF、图片导出及批量文件导出实现，文案只宣传结果文本分享。",
+    "图纸不是 1:1 下料模板；未宣传自动加咬口、焊缝、锯缝或回弹补偿。"
+  ]
+}
